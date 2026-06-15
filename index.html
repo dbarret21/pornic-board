@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornic Property Board — 15 juin 2026</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 14px; color: #1a1a1a; background: #f5f5f2; min-height: 100vh; }
+  .container { max-width: 900px; margin: 0 auto; padding: 1.5rem 1rem; }
+  .header { margin-bottom: 1.5rem; }
+  .header h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
+  .header .subtitle { font-size: 13px; color: #666; }
+  .filter-bar { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; align-items: center; }
+  .filter-label { font-size: 12px; color: #666; }
+  .badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: 6px; border: 0.5px solid transparent; }
+  .badge-pre1980 { background: #FCEBEB; color: #791F1F; border-color: #F09595; }
+  .badge-zone { background: #f0f0ec; color: #555; border-color: #ddd; }
+  .section-title { font-size: 12px; font-weight: 500; color: #888; text-transform: uppercase; letter-spacing: 0.05em; margin: 1.25rem 0 0.75rem; }
+  .section-count { font-weight: 400; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .card { background: #fff; border: 0.5px solid #e0e0da; border-radius: 12px; padding: 1rem 1.25rem; position: relative; }
+  .card.top-pick { border: 2px solid #378ADD; }
+  .card.top-pick::before { content: 'Top pick'; position: absolute; top: -1px; right: 12px; font-size: 10px; font-weight: 500; background: #378ADD; color: #fff; padding: 2px 8px; border-radius: 0 0 6px 6px; }
+  .card-name { font-size: 14px; font-weight: 500; margin-bottom: 2px; }
+  .card-location { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .card-price { font-size: 20px; font-weight: 500; margin-bottom: 2px; }
+  .card-price-sub { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .card-specs { display: flex; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+  .card-spec { font-size: 12px; color: #888; }
+  .card-spec span { font-weight: 500; color: #1a1a1a; }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .b-character { background: #EEEDFE; color: #3C3489; border-color: #AFA9EC; }
+  .b-pricedrop { background: #EAF3DE; color: #27500A; border-color: #97C459; }
+  .b-pre1980 { background: #E1F5EE; color: #085041; border-color: #5DCAA5; }
+  .b-atceiling { background: #FAEEDA; color: #633806; border-color: #EF9F27; }
+  .b-buildunk { background: #FAEEDA; color: #633806; border-color: #EF9F27; }
+  .card-note { font-size: 12px; color: #666; line-height: 1.5; margin-bottom: 10px; border-left: 2px solid #e0e0da; padding-left: 8px; }
+  .card-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .btn { font-size: 12px; padding: 5px 10px; border-radius: 6px; border: 0.5px solid #ccc; background: transparent; cursor: pointer; color: #1a1a1a; }
+  .btn:hover { background: #f5f5f2; }
+  .btn-up { border-color: #5DCAA5; color: #085041; }
+  .btn-up:hover { background: #E1F5EE; }
+  .btn-down { border-color: #F09595; color: #791F1F; }
+  .btn-down:hover { background: #FCEBEB; }
+  .btn-link { font-size: 12px; color: #888; text-decoration: none; padding: 5px 10px; border-radius: 6px; border: 0.5px solid transparent; }
+  .btn-link:hover { background: #f5f5f2; border-color: #e0e0da; }
+  .days-tag { font-size: 11px; color: #aaa; margin-left: auto; }
+  .divider { border: none; border-top: 0.5px solid #e0e0da; margin: 1.25rem 0; }
+  .empty-state { font-size: 13px; color: #888; padding: 0.5rem 0; }
+  .archived-toggle { cursor: pointer; font-size: 13px; color: #888; padding: 8px 0; user-select: none; }
+  .archived-list { display: none; border: 0.5px solid #e0e0da; border-radius: 8px; overflow: hidden; margin-top: 8px; }
+  .archived-list.open { display: block; }
+  .archived-row { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 0.5px solid #e0e0da; font-size: 12px; color: #888; background: #fff; }
+  .archived-row:last-child { border-bottom: none; }
+  .archived-name { flex: 1; }
+  .archived-reason { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: #f5f5f2; color: #666; }
+  .archived-date { font-size: 11px; color: #aaa; }
+  .web-note { font-size: 12px; color: #666; background: #fff; border: 0.5px solid #e0e0da; border-radius: 8px; padding: 8px 12px; margin-bottom: 1rem; }
+  #toast { position: fixed; bottom: 1.5rem; right: 1.5rem; background: #E1F5EE; color: #085041; padding: 10px 16px; border-radius: 8px; font-size: 13px; border: 0.5px solid #5DCAA5; display: none; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <h1>Pornic — Tableau de bord immobilier</h1>
+  <div class="subtitle">Mis à jour le 15 juin 2026</div>
+</div>
+
+<div class="web-note">Version web — les boutons vote copient le message dans le presse-papier pour utilisation dans Cowork.</div>
+
+<div class="filter-bar">
+  <span class="filter-label">Filtres :</span>
+  <span class="badge badge-pre1980">⚠ Pré-1980 obligatoire</span>
+  <span class="badge badge-zone">La Joselière</span>
+  <span class="badge badge-zone">La Birochère</span>
+  <span class="badge badge-zone">Gourmalon</span>
+  <span class="badge badge-zone">Sainte-Marie</span>
+  <span class="badge badge-zone">Pornic centre</span>
+  <span class="badge badge-zone">€300K – €500K · 75–120 m²</span>
+</div>
+
+<div class="section-title">Actives — en attente de feedback <span class="section-count">(4)</span></div>
+<div class="cards">
+
+  <div class="card top-pick">
+    <div class="card-name">Maison Nantaise 1966 — La Joselière</div>
+    <div class="card-location">Pornic — La Joselière · Agence des Flots</div>
+    <div class="card-price">484 100 €</div>
+    <div class="card-price-sub">470 000 € net · 4 284 €/m²</div>
+    <div class="card-specs">
+      <div class="card-spec"><span>113 m²</span> hab.</div>
+      <div class="card-spec"><span>500 m²</span> terrain</div>
+      <div class="card-spec"><span>6</span> pièces</div>
+      <div class="card-spec">Construit <span>1966</span></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge b-character">Caractère</span>
+      <span class="badge b-pricedrop">Baisse de prix</span>
+    </div>
+    <div class="card-note">500m² jardin plein sud · 0,75km mer · 5 ch · 2 sdb · garage · DPE D/D. ⚠ Vérifier prix canonique vs doublon UNCV. Tél: 02.40.82.20.69</div>
+    <div class="card-actions">
+      <button class="btn btn-up" onclick="copy('👍 Maison Nantaise 1966 — La Joselière — I like this one. Please dig deeper and prepare a full visit brief.')">👍 Intéressant</button>
+      <button class="btn btn-down" onclick="copy('👎 Maison Nantaise 1966 — La Joselière — not for me. What specifically missed the mark and how should we adjust the filter?')">👎 Pas pour moi</button>
+      <a class="btn-link" href="https://www.agencedesflots.com/fiches/4-40-26_58473363/maison-5-chambres-113-m2-la-joseliere.html" target="_blank">Voir l'annonce ↗</a>
+      <span class="days-tag">Jour 19</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-name">Plain-pied 1979 — La Birochère</div>
+    <div class="card-location">Pornic — Birochère-Joselière · VALENTI IMMOBILIER</div>
+    <div class="card-price">390 000 €</div>
+    <div class="card-price-sub">390 000 € net · 4 105 €/m²</div>
+    <div class="card-specs">
+      <div class="card-spec"><span>95 m²</span> hab.</div>
+      <div class="card-spec"><span>604 m²</span> terrain</div>
+      <div class="card-spec"><span>4</span> pièces</div>
+      <div class="card-spec">Construit <span>1979</span></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge b-pre1980">Pré-1980 ✓</span>
+    </div>
+    <div class="card-note">Meilleur prix/m² du tableau · DPE D/B · expo est · 604m² terrain. ⚠ À re-confirmer: Nicolas PAYEN 06 63 28 77 09.</div>
+    <div class="card-actions">
+      <button class="btn btn-up" onclick="copy('👍 Plain-pied 1979 — La Birochère — I like this one. Please dig deeper and prepare a full visit brief.')">👍 Intéressant</button>
+      <button class="btn btn-down" onclick="copy('👎 Plain-pied 1979 — La Birochère — not for me. What specifically missed the mark and how should we adjust the filter?')">👎 Pas pour moi</button>
+      <a class="btn-link" href="https://www.seloger.com/annonces/achat/maison/pornic-44/birochere-joseliere/270214061.htm" target="_blank">Voir l'annonce ↗</a>
+      <span class="days-tag">Jour 17</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-name">Rare — Boulevard de l'Océan, Sainte-Marie</div>
+    <div class="card-location">Pornic — Sainte-Marie-sur-Mer · Agence Sainte-Marie</div>
+    <div class="card-price">458 840 €</div>
+    <div class="card-price-sub">6 117 €/m² · T4</div>
+    <div class="card-specs">
+      <div class="card-spec"><span>75 m²</span> hab.</div>
+      <div class="card-spec">Terrain NC</div>
+      <div class="card-spec"><span>4</span> pièces</div>
+      <div class="card-spec">Date <span>inconnue</span></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge b-buildunk">Date à vérifier</span>
+    </div>
+    <div class="card-note">Bvd de l'Océan · jardin ouest · chauf. gaz · réno lourde. ⚠ Pré-1980 NON CONFIRMÉ: 02.40.82.06.05.</div>
+    <div class="card-actions">
+      <button class="btn btn-up" onclick="copy('👍 Rare — Boulevard de l\'Océan, Sainte-Marie — I like this one. Please dig deeper and prepare a full visit brief.')">👍 Intéressant</button>
+      <button class="btn btn-down" onclick="copy('👎 Rare — Boulevard de l\'Océan, Sainte-Marie — not for me. What specifically missed the mark and how should we adjust the filter?')">👎 Pas pour moi</button>
+      <a class="btn-link" href="https://www.agencesaintemarie.com/vente/1-pornic/maison/t4/264-rare-a-la-vente-boulevard-de-l-ocean-sainte-marie/" target="_blank">Voir l'annonce ↗</a>
+      <span class="days-tag">Jour 13</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-name">Esprit maison — vue sur le port</div>
+    <div class="card-location">Pornic centre — vieux bourg · Espaces Atypiques</div>
+    <div class="card-price">495 000 €</div>
+    <div class="card-price-sub">5 729 €/m² · DPE C/C</div>
+    <div class="card-specs">
+      <div class="card-spec"><span>86,4 m²</span> hab.</div>
+      <div class="card-spec">Sans jardin</div>
+      <div class="card-spec"><span>3</span> pièces</div>
+      <div class="card-spec">Tissu <span>ancien</span></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge b-atceiling">Au plafond</span>
+      <span class="badge b-character">Caractère</span>
+      <span class="badge b-buildunk">Date à vérifier</span>
+    </div>
+    <div class="card-note">Duplex cœur vieux bourg · vue port · exception jardin applicable. Relisé 14/06 après offre avortée — potentiellement négociable.</div>
+    <div class="card-actions">
+      <button class="btn btn-up" onclick="copy('👍 Esprit maison — vue sur le port — I like this one. Please dig deeper and prepare a full visit brief.')">👍 Intéressant</button>
+      <button class="btn btn-down" onclick="copy('👎 Esprit maison — vue sur le port — not for me. What specifically missed the mark and how should we adjust the filter?')">👎 Pas pour moi</button>
+      <a class="btn-link" href="https://www.espaces-atypiques.com/ventes/44210-pornic-esprit-maison-au-coeur-de-pornic-avec-vue-sur-le-port-3050/" target="_blank">Voir l'annonce ↗</a>
+      <span class="days-tag">Jour 1</span>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+<div class="section-title">Intéressant — sélection David <span class="section-count">(0)</span></div>
+<div class="empty-state">Aucune propriété marquée comme intéressante.</div>
+<hr class="divider">
+
+<div class="archived-toggle" onclick="document.getElementById('arch').classList.toggle('open'); this.textContent = document.getElementById('arch').classList.contains('open') ? '▾ Archivées (8)' : '▸ Archivées (8)';">▸ Archivées (8)</div>
+<div class="archived-list" id="arch">
+  <div class="archived-row"><span class="archived-name">Maison de caractère en pierre — Gourmalon</span><span class="archived-reason">Vendu</span><span class="archived-date">27/05</span></div>
+  <div class="archived-row"><span class="archived-name">Maison Pornic 1998 — jardin S/O</span><span class="archived-reason">Refus (sans âme)</span><span class="archived-date">27/05</span></div>
+  <div class="archived-row"><span class="archived-name">Maison 2018 — Le Clion-sur-Mer</span><span class="archived-reason">Post-1980</span><span class="archived-date">28/05</span></div>
+  <div class="archived-row"><span class="archived-name">Plain-pied 1988 — Sainte-Marie</span><span class="archived-reason">Post-1980</span><span class="archived-date">29/05</span></div>
+  <div class="archived-row"><span class="archived-name">Maison 2017 — Sainte-Marie La Geltière</span><span class="archived-reason">Post-1980</span><span class="archived-date">29/05</span></div>
+  <div class="archived-row"><span class="archived-name">Maison 2013 rénovée — Birochère-Joselière</span><span class="archived-reason">Post-1980</span><span class="archived-date">29/05</span></div>
+  <div class="archived-row"><span class="archived-name">Maison 2013 — Gicquel/L'Immobilière du Littoral</span><span class="archived-reason">Post-1980</span><span class="archived-date">01/06</span></div>
+  <div class="archived-row"><span class="archived-name">Maison 2013 — Nathalie LABBÉ / Proprietes-privees</span><span class="archived-reason">Post-1980</span><span class="archived-date">01/06</span></div>
+</div>
+
+<div id="toast">Texte copié ✓</div>
+
+</div>
+<script>
+function copy(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(toast);
+  } else {
+    var t = document.createElement('textarea');
+    t.value = text; document.body.appendChild(t); t.select();
+    document.execCommand('copy'); document.body.removeChild(t); toast();
+  }
+}
+function toast() {
+  var el = document.getElementById('toast');
+  el.style.display = 'block';
+  setTimeout(function(){ el.style.display='none'; }, 2500);
+}
+</script>
+</body>
+</html>
