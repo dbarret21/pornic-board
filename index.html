@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornic Property Board — 2026-07-01</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #f4f3ee;
+    color: #2c2c2a;
+    margin: 0;
+    padding: 24px 16px 64px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header { margin-bottom: 24px; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+  .date { font-size: 13px; color: #5f5e5a; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 8px; background: #eceae2; color: #5f5e5a; }
+  .badge.red { background: #fcebeb; color: #791f1f; font-weight: 500; }
+  .badge.blue { background: #e6f1fb; color: #0c447c; }
+  h2 { font-size: 17px; font-weight: 500; margin: 32px 0 12px; }
+  .card {
+    background: #ffffff;
+    border: 1px solid #e3e1d8;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 12px;
+  }
+  .card.top-pick { border: 2px solid #378ADD; }
+  .card.interested { border-color: #97C459; }
+  .card-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+  .card-head p.name { font-weight: 500; font-size: 16px; margin: 0; }
+  .card-head p.loc { font-size: 13px; color: #5f5e5a; margin: 2px 0 0; }
+  .tag { font-size: 11px; padding: 3px 8px; border-radius: 6px; margin-right: 6px; display: inline-block; }
+  .tag.top { background: #e6f1fb; color: #0c447c; }
+  .tag.char { background: #eceae2; color: #444441; }
+  .tag.drop { background: #eaf3de; color: #27500a; }
+  .tag.unknown { background: #faeeda; color: #854f0b; }
+  .tag.interested { background: #eaf3de; color: #27500a; font-weight: 500; }
+  table.facts { width: 100%; font-size: 13px; margin: 10px 0; border-collapse: collapse; }
+  table.facts td { padding: 3px 0; }
+  table.facts td:last-child { text-align: right; font-weight: 500; }
+  .note { font-size: 13px; color: #5f5e5a; line-height: 1.5; margin: 8px 0 12px; }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button.vote {
+    font-size: 13px; padding: 6px 14px; border-radius: 8px; border: 1px solid #b4b2a9;
+    background: #fff; cursor: pointer;
+  }
+  button.vote:hover { background: #f4f3ee; }
+  a.link { font-size: 13px; color: #185fa5; text-decoration: none; margin-left: auto; }
+  a.link:hover { text-decoration: underline; }
+  details { margin-top: 8px; }
+  summary { cursor: pointer; font-weight: 500; font-size: 16px; padding: 8px 0; color: #5f5e5a; }
+  .archived-row { display: flex; justify-content: space-between; gap: 8px; padding: 10px 4px; border-bottom: 1px solid #e3e1d8; opacity: 0.6; font-size: 13px; }
+  .archived-row span.meta { font-size: 12px; color: #888780; white-space: nowrap; }
+  .empty { font-size: 13px; color: #888780; }
+  footnote { display:block; font-size: 11px; color: #888780; margin-top: 16px; }
+  #copy-toast {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: #2c2c2a; color: #fff; padding: 8px 16px; border-radius: 8px;
+    font-size: 13px; display: none;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Pornic property board</h1>
+    <div class="date">Last updated 2026-07-01</div>
+  </header>
+
+  <div class="badges">
+    <span class="badge red">Pre-1980 required</span>
+    <span class="badge">€300K–€500K (ceiling €475K)</span>
+    <span class="badge">75–120 m²</span>
+    <span class="badge">Garden required*</span>
+    <span class="badge">Sea &lt;5km</span>
+  </div>
+  <div class="badges">
+    <span class="badge blue">La Joselière</span>
+    <span class="badge blue">La Birochère</span>
+    <span class="badge blue">Gourmalon</span>
+    <span class="badge blue">Sainte-Marie-sur-Mer</span>
+    <span class="badge blue">Pornic centre</span>
+  </div>
+
+  <h2>Active — awaiting feedback (3)</h2>
+
+  <div class="card top-pick">
+    <div class="card-head">
+      <div>
+        <p class="name">Maison Nantaise 1966 — La Joselière</p>
+        <p class="loc">Pornic — La Joselière</p>
+      </div>
+      <span class="tag top">Top pick</span>
+    </div>
+    <div>
+      <span class="tag char">Pre-1980 (1966)</span>
+      <span class="tag char">Character</span>
+      <span class="tag drop">Price drop</span>
+    </div>
+    <table class="facts">
+      <tr><td>Price</td><td>€449,000 (€3,973/m²)</td></tr>
+      <tr><td>Surface / rooms</td><td>113 m² · 6 pièces</td></tr>
+      <tr><td>Build / agent</td><td>1966 · Agence des Flots</td></tr>
+    </table>
+    <p class="note">Down €35,100 from €484,100. Triple-listing price disparity persists (UNCV €462,500, third agent €462,985) — call Agence des Flots to reconcile. Day 35, best value character property on the board at €3,973/m².</p>
+    <div class="actions">
+      <button class="vote" onclick="vote('Maison Nantaise 1966 — La Joselière', true)">Intéressant</button>
+      <button class="vote" onclick="vote('Maison Nantaise 1966 — La Joselière', false)">Pas pour moi</button>
+      <a class="link" href="https://www.agencedesflots.com/fiches/4-40-26_58473363/maison-5-chambres-113-m2-la-joseliere.html" target="_blank">Voir l'annonce ↗</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <p class="name">Plain-pied 1979 — La Birochère</p>
+        <p class="loc">Pornic — Birochère-Joselière</p>
+      </div>
+    </div>
+    <div>
+      <span class="tag char">Pre-1980 (1979)</span>
+    </div>
+    <table class="facts">
+      <tr><td>Price</td><td>€390,000 (€4,105/m²)</td></tr>
+      <tr><td>Surface / rooms</td><td>95 m² · 4 pièces</td></tr>
+      <tr><td>Build / agent</td><td>1979 · Valenti Immobilier</td></tr>
+    </table>
+    <p class="note">Board's best price/m² entry point. Unchanged at €390,000, day 33. Offer target €370K. Contact Nicolas Payen 06 63 28 77 09.</p>
+    <div class="actions">
+      <button class="vote" onclick="vote('Plain-pied 1979 — La Birochère', true)">Intéressant</button>
+      <button class="vote" onclick="vote('Plain-pied 1979 — La Birochère', false)">Pas pour moi</button>
+      <a class="link" href="https://www.seloger.com/annonces/achat/maison/pornic-44/birochere-joseliere/270214061.htm" target="_blank">Voir l'annonce ↗</a>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <p class="name">Rare — Boulevard de l'Océan, Sainte-Marie</p>
+        <p class="loc">Pornic — Sainte-Marie-sur-Mer</p>
+      </div>
+    </div>
+    <div>
+      <span class="tag unknown">Build date unknown</span>
+    </div>
+    <table class="facts">
+      <tr><td>Price</td><td>€458,840 (€6,117/m²)</td></tr>
+      <tr><td>Surface / rooms</td><td>75 m² · 4 pièces</td></tr>
+      <tr><td>Build / agent</td><td>Unknown · Agence Sainte-Marie</td></tr>
+    </table>
+    <p class="note">Steps from the beach, needs full renovation. Day 29 — pre-1980 confirmation still outstanding, getting urgent. Call 02.40.82.06.05.</p>
+    <div class="actions">
+      <button class="vote" onclick="vote('Rare — Boulevard de l’Océan, Sainte-Marie', true)">Intéressant</button>
+      <button class="vote" onclick="vote('Rare — Boulevard de l’Océan, Sainte-Marie', false)">Pas pour moi</button>
+      <a class="link" href="https://www.agencesaintemarie.com/vente/1-pornic/maison/t4/264-rare-a-la-vente-boulevard-de-l-ocean-sainte-marie/" target="_blank">Voir l'annonce ↗</a>
+    </div>
+  </div>
+
+  <h2>Interested (0)</h2>
+  <p class="empty">Nothing marked yet.</p>
+
+  <details>
+    <summary>Archived (9)</summary>
+    <div class="archived-row"><span>Esprit maison — vue sur le port</span><span class="meta">sous offre · 2026-07-01</span></div>
+    <div class="archived-row"><span>Maison de caractère en pierre — Gourmalon</span><span class="meta">vendu · 2026-05-27</span></div>
+    <div class="archived-row"><span>Maison Pornic — jardin S/O</span><span class="meta">thumbs down (1998) · 2026-05-27</span></div>
+    <div class="archived-row"><span>Maison Pornic 4 pièces — Le Clion</span><span class="meta">post-1980 (2018) · 2026-05-28</span></div>
+    <div class="archived-row"><span>Plain-pied 1988 — Sainte-Marie</span><span class="meta">post-1980 · 2026-05-29</span></div>
+    <div class="archived-row"><span>Maison récente 2017 — Sainte-Marie La Geltière</span><span class="meta">post-1980 · 2026-05-29</span></div>
+    <div class="archived-row"><span>Maison 2013 rénovée — Birochère-Joselière</span><span class="meta">post-1980 · 2026-05-29</span></div>
+    <div class="archived-row"><span>Maison 2013 Birochère — Gicquel</span><span class="meta">post-1980 · 2026-06-01</span></div>
+    <div class="archived-row"><span>Maison 2013 Birochère — Labbé</span><span class="meta">post-1980 · 2026-06-01</span></div>
+  </details>
+
+  <footnote>*Garden requirement waived for Pornic centre with exceptional port/sea view or character.</footnote>
+</div>
+
+<div id="copy-toast">Copié — collez le message dans le chat</div>
+
+<script>
+function vote(name, up) {
+  var msg = up
+    ? "👍 " + name + " — I like this one. Please dig deeper and prepare a full visit brief."
+    : "👎 " + name + " — not for me. What specifically missed the mark and how should we adjust the filter?";
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(msg).then(function() {
+      var t = document.getElementById('copy-toast');
+      t.style.display = 'block';
+      setTimeout(function() { t.style.display = 'none'; }, 2500);
+    });
+  }
+}
+</script>
+</body>
+</html>
