@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornic Property Board — 23 juillet 2026</title>
+<style>
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f7f6f2; margin: 0; padding: 24px; color: #2c2c2a; }
+  .wrap { max-width: 1000px; margin: 0 auto; }
+  h1 { font-size: 22px; font-weight: 500; margin: 0 0 4px; }
+  .sub { color: #5f5e5a; font-size: 14px; margin: 0 0 24px; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .badge { font-size: 12px; padding: 4px 12px; border-radius: 8px; background: #eee; color: #444; }
+  .badge.red { background: #FCEBEB; color: #791F1F; font-weight: 500; }
+  .badge.zone { background: #E6F1FB; color: #0C447C; font-size: 11px; }
+  h2 { font-size: 18px; font-weight: 500; margin: 32px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .card { background: #fff; border-radius: 12px; padding: 16px 20px; border: 0.5px solid #ddd; }
+  .card.top { border: 2px solid #185FA5; }
+  .name { font-weight: 500; font-size: 14px; margin: 0 0 4px; line-height: 1.4; }
+  .loc { font-size: 12px; color: #5f5e5a; margin: 0 0 8px; }
+  .cardbadges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+  .cb { font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 8px; }
+  .cb.top_pick { background: #EEEDFE; color: #26215C; }
+  .cb.character { background: #FAEEDA; color: #412402; }
+  .price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+  .price { font-size: 20px; font-weight: 500; }
+  .ppm { font-size: 12px; color: #888780; }
+  .meta { font-size: 12px; color: #5f5e5a; margin: 0 0 10px; }
+  .note { font-size: 12px; color: #5f5e5a; line-height: 1.5; margin: 0 0 12px; }
+  a.link { font-size: 12px; color: #185FA5; text-decoration: none; display: inline-block; margin-bottom: 12px; }
+  .btnrow { display: flex; gap: 8px; }
+  button { flex: 1; font-size: 12px; padding: 8px; border-radius: 8px; border: 0.5px solid #bbb; background: #fff; cursor: pointer; }
+  button:hover { background: #f2f2f2; }
+  #archived-toggle { cursor: pointer; display: flex; align-items: center; gap: 6px; color: #5f5e5a; font-size: 14px; margin: 32px 0 10px; user-select: none; }
+  .arch-row { display: flex; justify-content: space-between; gap: 12px; padding: 8px 4px; border-bottom: 0.5px solid #ddd; opacity: 0.6; font-size: 13px; }
+  .arch-reason { color: #888780; font-size: 12px; white-space: nowrap; }
+  .empty { color: #888780; font-size: 14px; }
+  .clipboard-note { display:none; font-size: 11px; color: #0f6e56; margin-top: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Pornic property board</h1>
+  <p class="sub">Mise à jour du 23 juillet 2026 — David Barret, recherche immobilière Pornic &amp; 30km</p>
+
+  <div class="badges">
+    <span class="badge red">House only</span>
+    <span class="badge">€200K–€400K</span>
+    <span class="badge">90–115 m²</span>
+    <span class="badge">Garden required</span>
+    <span class="badge">Sea &lt;5km</span>
+  </div>
+  <div class="badges">
+    <span class="badge zone">La Joselière</span>
+    <span class="badge zone">La Birochère</span>
+    <span class="badge zone">Gourmalon</span>
+    <span class="badge zone">Sainte-Marie-sur-Mer</span>
+    <span class="badge zone">Préfailles</span>
+    <span class="badge zone">La Bernerie-en-Retz</span>
+    <span class="badge zone">Les Moutiers-en-Retz</span>
+    <span class="badge zone">Saint-Michel-Chef-Chef</span>
+    <span class="badge">La Noëveillard (watch)</span>
+  </div>
+
+  <h2>Active listings — 13</h2>
+  <div class="grid" id="active-grid"></div>
+
+  <h2>Interested — 0</h2>
+  <p class="empty">No properties starred yet.</p>
+
+  <div id="archived-toggle" onclick="toggleArchived()">
+    <span id="chev">▶</span><span>Archived — 18</span>
+  </div>
+  <div id="archived-list" style="display:none;"></div>
+</div>
+
+<script>
+const active = [
+  {id:"SL-275268775", name:"Maison néo-bretonne 106m² — Saint-Michel-Chef-Chef (50m de l'océan, Tharon)", loc:"Saint-Michel-Chef-Chef", price:361000, ppm:3406, surface:106, rooms:"5 pièces · 3 ch", built:"inconnu", agent:"Clément Brisson Dr House Immo", badges:["top_pick","character"], note:"TOP PICK — 50m de la plage de Tharon, calme absolu. Style néo-breton, cheminée pierres apparentes, suite parentale en RDC. 645m² clos et paysagé. DPE F/GES C — budget isolation à prévoir. Meilleure proximité mer jamais vue sur ce board.", url:"https://www.seloger.com/annonces/achat/maison/saint-michel-chef-chef-44/275268775.htm"},
+  {id:"SL-275700117", name:"Maison bel aperçu mer 105m² — Saint-Michel-Chef-Chef", loc:"Saint-Michel-Chef-Chef", price:394000, ppm:3752, surface:105, rooms:"5 pièces · 3 ch", built:"1965", agent:"Nantes Sud Immobilier", badges:["character"], note:"Aperçu mer depuis séjour lumineux, sans vis-à-vis. 676m² jardin clos. 3 chambres dont 1 en rez-de-jardin avec garage. DPE E/GES E.", url:"https://www.seloger.com/annonces/achat/maison/saint-michel-chef-chef-44/275700117.htm"},
+  {id:"SL-275184843", name:"Plain-pied à rafraîchir 109m² — Sainte-Marie (proche port)", loc:"Sainte-Marie-sur-Mer", price:376000, ppm:3450, surface:109, rooms:"4 pièces · 2 ch", built:"1982", agent:"Votre Immobilier Pornicais", badges:[], note:"618m² clos, terrasse plein sud, 2 cabanons, garage. Rafraîchissement simple. Proche commerces et port.", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/275184843.htm"},
+  {id:"SL-273423687", name:"Maison 1979 — 800m du Vieux Port (Sainte-Marie)", loc:"Sainte-Marie-sur-Mer", price:376200, ppm:4180, surface:90, rooms:"4 pièces · 3 ch", built:"1979", agent:"Liberkeys / Camille Crenn", badges:["character"], note:"Meilleure marchabilité du board — 800m du Vieux Port. Jardin 658m² enveloppant, non mitoyenne.", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/273423687.htm"},
+  {id:"SL-270776625", name:"Plain-pied 95m² — La Bernerie-en-Retz (400m de l'océan)", loc:"La Bernerie-en-Retz", price:378600, ppm:3985, surface:95, rooms:"4 pièces · 3 ch", built:"inconnu", agent:"L'Adresse Jade Immobilier", badges:["character"], note:"400m de l'océan, 800m du bourg. Cellier + garage + atelier + cave. DPE D/GES C.", url:"https://www.seloger.com/annonces/achat/maison/la-bernerie-en-retz-44/270776625.htm"},
+  {id:"SL-270077071", name:"Maison 1979 — La Birochère (rénovation à prévoir)", loc:"La Birochère-Joselière", price:390000, ppm:4063, surface:96, rooms:"4 pièces · 3 ch", built:"1979", agent:"Agence Sainte Marie", badges:[], note:"604m² jardin ouest, fort potentiel de transformation.", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/birochere-joseliere/270077071.htm"},
+  {id:"SL-258861183", name:"Maison d'architecte atypique 102m² — Les Moutiers-en-Retz", loc:"Les Moutiers-en-Retz", price:399500, ppm:3917, surface:102, rooms:"4 pièces · 2 ch", built:"2009", agent:"iad France / Lucie Boue", badges:["character"], note:"4 420m² de terrain avec salorge ~90m². DPE D/GES A. Distance à la mer non confirmée.", url:"https://www.seloger.com/annonces/achat/maison/les-moutiers-en-retz-44/258861183.htm"},
+  {id:"SL-274596337", name:"Maison neuve 2021 101m² — Saint-Michel-Chef-Chef (DPE A, sans travaux)", loc:"Saint-Michel-Chef-Chef", price:388500, ppm:3847, surface:101, rooms:"6 pièces · 4 ch", built:"2021", agent:"L'Effet Halgand / Quentin Halgand", badges:[], note:"Meilleure performance énergétique du board, zéro risque travaux. ~1,5km de la mer.", url:"https://www.seloger.com/annonces/achat/maison/saint-michel-chef-chef-44/274596337.htm"},
+  {id:"SL-266435963", name:"Maison familiale 1975 — Sainte-Marie (à rafraîchir)", loc:"Sainte-Marie-sur-Mer", price:365000, ppm:3763, surface:97, rooms:"5 pièces · 4 ch", built:"1975", agent:"Alphore / Françoise Tenenhaus", badges:[], note:"€/m² le plus bas du board. 852m² terrain boisé, garage ~50m².", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/266435963.htm"},
+  {id:"SL-273203957", name:"Maison de caractère 1750/1900 plain-pied 109m² — Les Moutiers-en-Retz", loc:"Les Moutiers-en-Retz", price:332850, ppm:3054, surface:109, rooms:"5 pièces · 3 ch", built:"1900", agent:"AJP Pornic", badges:["character"], note:"Configurable en deux parties — angle location saisonnière direct. DPE F.", url:"https://www.seloger.com/annonces/achat/maison/les-moutiers-en-retz-44/273203957.htm"},
+  {id:"SL-270214049", name:"Plain-pied 1988 — Sainte-Marie (2 096m² terrain)", loc:"Sainte-Marie-sur-Mer", price:336000, ppm:3500, surface:96, rooms:"4 pièces · 3 ch", built:"1988", agent:"Valenti Immobilier / Lucille Dechamps", badges:[], note:"Assainissement non conforme (budget €8-15K). DPE E/GES E.", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/270214049.htm"},
+  {id:"SL-251504709", name:"Maison à rénover 90m² — Préfailles (budget entry point)", loc:"Préfailles", price:299999, ppm:3333, surface:90, rooms:"5 pièces · 4 ch", built:"1974", agent:"iad France / Florian Crepin", badges:[], note:"Le moins cher de Préfailles. Rafraîchissement complet nécessaire.", url:"https://www.seloger.com/annonces/achat/maison/prefailles-44/251504709.htm"}
+];
+
+const archived = [
+  {name:"Maison 1980 entièrement rénovée — Les Moutiers-en-Retz", reason:"Sous offre (ancien top pick)", date:"2026-07-23"},
+  {name:"Plain-pied 2005 — Saint-Michel-Chef-Chef", reason:"Annonce supprimée", date:"2026-07-23"},
+  {name:"Maison bord de mer — Préfailles (particulier)", reason:"Annonce disparue / redirigée", date:"2026-07-23"},
+  {name:"Plain-pied 1979 — La Birochère (Valenti/Payen)", reason:"Annonce supprimée", date:"2026-07-15"},
+  {name:"Maison années 70 à rafraîchir — La Bernerie-en-Retz", reason:"Annonce supprimée", date:"2026-07-13"},
+  {name:"Maison Nantaise 1966 — La Joselière", reason:"Au-dessus du plafond budget", date:"2026-07-10"},
+  {name:"Rare — Boulevard de l'Océan, Sainte-Marie", reason:"Au-dessus du plafond budget", date:"2026-07-10"},
+  {name:"Plain-pied rénové 1975 — Sainte-Marie (hameau)", reason:"Au-dessus du plafond budget", date:"2026-07-10"},
+  {name:"Balnéaire années 30 — Gourmalon", reason:"Au-dessus du plafond budget", date:"2026-07-10"},
+  {name:"Maison de ville en triplex — atelier d'artiste", reason:"Annonce disparue", date:"2026-07-09"},
+  {name:"Esprit maison — vue sur le port", reason:"Sous offre", date:"2026-07-01"},
+  {name:"Maison de caractère en pierre — Gourmalon", reason:"Vendu", date:"2026-05-27"},
+  {name:"Maison Pornic — jardin S/O", reason:"Refus David (sans âme)", date:"2026-05-27"},
+  {name:"Maison Pornic 4 pièces 96m²", reason:"Post-1980 (ancien filtre)", date:"2026-05-28"},
+  {name:"Maison récente 2017 — Sainte-Marie", reason:"Post-1980 (ancien filtre)", date:"2026-05-29"},
+  {name:"Maison 2013 rénovée — Birochère", reason:"Post-1980 (ancien filtre)", date:"2026-05-29"},
+  {name:"Maison 2013 Birochère — Gicquel", reason:"Post-1980 (ancien filtre)", date:"2026-06-01"},
+  {name:"Maison 2013 Birochère — Labbé", reason:"Post-1980 (ancien filtre)", date:"2026-06-01"}
+];
+
+function euro(n){ return n.toLocaleString('fr-FR') + ' €'; }
+
+const grid = document.getElementById('active-grid');
+active.forEach(p => {
+  const isTop = p.badges.includes('top_pick');
+  const card = document.createElement('div');
+  card.className = 'card' + (isTop ? ' top' : '');
+
+  const badgeMap = {top_pick:['Top pick','top_pick'], character:['Caractère','character']};
+  const badgeHtml = p.badges.map(b => {
+    const [label, cls] = badgeMap[b] || [b,'character'];
+    return '<span class="cb ' + cls + '">' + label + '</span>';
+  }).join(' ');
+
+  card.innerHTML = `
+    <p class="name">${p.name}</p>
+    <p class="loc">${p.loc}</p>
+    <div class="cardbadges">${badgeHtml}</div>
+    <div class="price-row">
+      <span class="price">${euro(p.price)}</span>
+      <span class="ppm">${p.ppm.toLocaleString('fr-FR')} €/m²</span>
+    </div>
+    <p class="meta">${p.surface} m² · ${p.rooms} · construit ${p.built} · ${p.agent}</p>
+    <p class="note">${p.note}</p>
+    <a class="link" href="${p.url}" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+    <div class="btnrow">
+      <button data-vote="up" data-name="${p.name.replace(/"/g,'&quot;')}">Intéressant</button>
+      <button data-vote="down" data-name="${p.name.replace(/"/g,'&quot;')}">Pas pour moi</button>
+    </div>
+    <div class="clipboard-note"></div>
+  `;
+  grid.appendChild(card);
+});
+
+document.querySelectorAll('button[data-vote]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const name = btn.getAttribute('data-name');
+    const vote = btn.getAttribute('data-vote');
+    const text = vote === 'up'
+      ? `👍 ${name} — I like this one. Please dig deeper and prepare a full visit brief.`
+      : `👎 ${name} — not for me. What specifically missed the mark and how should we adjust the filter?`;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(() => {
+        const noteEl = btn.closest('.card').querySelector('.clipboard-note');
+        noteEl.style.display = 'block';
+        noteEl.textContent = 'Copied — paste into chat with David.';
+        setTimeout(() => { noteEl.style.display = 'none'; }, 3000);
+      });
+    }
+  });
+});
+
+const archList = document.getElementById('archived-list');
+archived.forEach(a => {
+  const row = document.createElement('div');
+  row.className = 'arch-row';
+  row.innerHTML = `<span>${a.name}</span><span class="arch-reason">${a.reason} · ${a.date}</span>`;
+  archList.appendChild(row);
+});
+
+function toggleArchived(){
+  const list = document.getElementById('archived-list');
+  const chev = document.getElementById('chev');
+  const open = list.style.display === 'block';
+  list.style.display = open ? 'none' : 'block';
+  chev.textContent = open ? '▶' : '▼';
+}
+</script>
+</body>
+</html>
