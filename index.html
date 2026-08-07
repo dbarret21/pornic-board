@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornic Property Board — David Barret</title>
+<style>
+  :root{
+    --bg:#f5f4f1; --card:#ffffff; --border:#e2e0d9; --text:#1f1e1c; --text-secondary:#6b6a64; --text-muted:#8f8e88;
+    --accent:#185fa5; --accent-bg:#e6f1fb; --danger:#a32d2d; --danger-bg:#fcebeb;
+    --success:#3b6d11; --success-bg:#eaf3de; --warning:#854f0b; --warning-bg:#faeeda;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;padding:2rem 1.25rem;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;line-height:1.5;}
+  .wrap{max-width:1100px;margin:0 auto;}
+  header{margin-bottom:1.5rem;}
+  h1{font-size:22px;font-weight:600;margin:0 0 4px;}
+  .updated{font-size:13px;color:var(--text-secondary);}
+  .badges{display:flex;flex-wrap:wrap;gap:6px;margin:1rem 0 0.5rem;}
+  .badge{font-size:12px;font-weight:500;padding:4px 10px;border-radius:6px;background:var(--card);border:0.5px solid var(--border);color:var(--text-secondary);}
+  .badge.house{background:var(--danger-bg);color:var(--danger);border:none;font-weight:600;}
+  .badge.zone{background:var(--accent-bg);color:var(--accent);border:none;}
+  .badge.watch{color:var(--text-muted);}
+  .scope-note{font-size:12px;color:var(--text-muted);margin:0 0 1.5rem;}
+  h2{font-size:18px;font-weight:600;margin:0 0 10px;display:flex;align-items:baseline;justify-content:space-between;}
+  h2 .count{font-size:13px;font-weight:400;color:var(--text-secondary);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;margin-bottom:2rem;}
+  .card{background:var(--card);border:0.5px solid var(--border);border-radius:12px;padding:1rem 1.15rem;}
+  .card.top-pick{border:2px solid var(--accent);}
+  .card-badges{margin-bottom:6px;}
+  .cbadge{font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;margin-right:4px;display:inline-block;margin-bottom:4px;}
+  .cbadge.top_pick{background:var(--accent-bg);color:var(--accent);}
+  .cbadge.character{background:#f1efe8;color:#444441;}
+  .cbadge.price_drop{background:var(--success-bg);color:var(--success);}
+  .cbadge.stale_45d{background:var(--warning-bg);color:var(--warning);}
+  .cbadge.interested{background:var(--success-bg);color:var(--success);}
+  .title{font-weight:600;font-size:14px;margin:0 0 4px;}
+  .loc{font-size:12px;color:var(--text-secondary);margin:0 0 8px;}
+  .price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+  .price{font-size:18px;font-weight:600;}
+  .m2{font-size:12px;color:var(--text-secondary);}
+  .meta{font-size:12px;color:var(--text-secondary);margin:0 0 8px;}
+  .note{font-size:13px;margin:0 0 10px;}
+  .card a.link{font-size:13px;color:var(--accent);display:inline-block;margin-bottom:10px;text-decoration:none;}
+  .btn-row{display:flex;gap:8px;margin-top:4px;}
+  button{font-family:inherit;font-size:13px;padding:8px 10px;border-radius:6px;border:0.5px solid var(--border);background:var(--card);cursor:pointer;color:var(--text);}
+  button:hover{background:#f1efe8;}
+  .btn-row button{flex:1;}
+  .reason-panel{display:none;margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border);}
+  .reason-panel label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);margin-bottom:4px;}
+  .reason-panel input[type=text]{width:100%;margin:8px 0;padding:6px 8px;border-radius:6px;border:0.5px solid var(--border);font-family:inherit;font-size:12px;}
+  .btn-confirm{width:100%;background:var(--danger-bg);color:var(--danger);border:none;font-weight:600;}
+  .btn-brief{width:100%;}
+  details{border-top:0.5px solid var(--border);padding-top:12px;}
+  summary{cursor:pointer;font-size:14px;font-weight:600;color:var(--text-secondary);}
+  .arch-row{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--text-muted);padding:5px 0;border-bottom:0.5px solid var(--border);}
+  .empty{font-size:13px;color:var(--text-muted);}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Pornic Property Board</h1>
+  <div class="updated">Updated 7 August 2026 — David's live search board</div>
+</header>
+
+<div class="badges">
+  <span class="badge house">House only</span>
+  <span class="badge">€200k–€400k</span>
+  <span class="badge">70–120 m²</span>
+  <span class="badge">Garden required</span>
+  <span class="badge zone">Pornic centre / vieux bourg</span>
+  <span class="badge zone">Gourmalon</span>
+  <span class="badge zone">Sainte-Marie-sur-Mer</span>
+  <span class="badge watch">La Noëveillard (watch-only)</span>
+</div>
+<p class="scope-note">Search narrowed 07/08 — Birochère, Joselière, Préfailles, La Bernerie, Les Moutiers-en-Retz and Saint-Michel-Chef-Chef are no longer in scope. 17 listings archived as a result.</p>
+
+<h2>Active listings <span class="count" id="active-count-label">0 awaiting feedback</span></h2>
+<div class="grid" id="active-grid"></div>
+<p class="empty" id="active-empty">No active listings right now.</p>
+
+<h2>Thumbs up <span class="count" id="up-count-label">1 interesting</span></h2>
+<div class="grid" id="up-grid"></div>
+<p class="empty" id="up-empty">No listings marked interesting yet.</p>
+
+<details>
+  <summary>Archived (<span id="archived-count">40</span>)</summary>
+  <div id="archived-list" style="margin-top:12px;display:flex;flex-direction:column;gap:2px;"></div>
+</details>
+</div>
+
+<script>
+function esc(s){
+  if(s===null||s===undefined) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function fmtEUR(n){ return n===null||n===undefined ? '—' : new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(Math.round(n)) + ' €'; }
+
+var TAXONOMY = [
+  {id:'too_far_sea', label:'Too far from the sea'},
+  {id:'no_garden', label:'No / insufficient garden'},
+  {id:'too_much_reno', label:'Too much renovation needed'},
+  {id:'wrong_zone', label:'Wrong zone / neighbourhood'},
+  {id:'overpriced', label:'Overpriced for the condition'},
+  {id:'layout_size', label:"Layout or size doesn't work"},
+  {id:'other', label:'Other'}
+];
+
+var ACTIVE = [];
+
+var THUMBSUP = [
+{name:"Maison familiale 1975 — Sainte-Marie (à rafraîchir)", location:"Pornic — Sainte-Marie-sur-Mer", price:365000, surface:97, rooms:5, built:"1975", agent:"Alphore / Françoise Tenenhaus", badges:[], note:"Lowest €/m² of the group. 852 m² wooded plot, veranda 14m², terrace 45m², garage ~50m². Needs cosmetic refresh. 10 min to Sainte-Marie beaches, not walkable.", url:"https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/266435963.htm"}
+];
+
+var ARCHIVED = [
+{name:"Plain-pied neuf 2015 78m² — Pornic La Blavetière (notaire, DPE A)", reason:"rejected: other — no longer available", date:"2026-08-07"},
+{name:"Plain-pied 1988 — Sainte-Marie (2 096m² terrain, assainissement non conforme)", reason:"rejected: too far from sea, too much reno, wrong zone, layout/size", date:"2026-08-07"},
+{name:"Plain-pied 2004 hameau calme — Sainte-Marie (canal Haute Perche)", reason:"rejected: too far from sea, wrong zone, layout/size", date:"2026-08-07"},
+{name:"Maison 1979 — 800m du Vieux Port (Sainte-Marie/Pornic centre)", reason:"rejected: too far from sea, no garden, too much reno, wrong zone", date:"2026-08-07"},
+{name:"Maison 1979 — La Birochère (rénovation à prévoir)", reason:"zone removed (Birochère/Joselière)", date:"2026-08-07"},
+{name:"Maison à rénover 90m² — Préfailles", reason:"zone removed (Préfailles)", date:"2026-08-07"},
+{name:"Maison d'architecte atypique 102m² — Les Moutiers-en-Retz", reason:"zone removed (Moutiers)", date:"2026-08-07"},
+{name:"Plain-pied 95m² — La Bernerie (400m océan) — was TOP PICK", reason:"zone removed (Bernerie)", date:"2026-08-07"},
+{name:"Maison neuve 2021 — Saint-Michel-Chef-Chef", reason:"zone removed (St-Michel-Chef-Chef)", date:"2026-08-07"},
+{name:"Maison bel aperçu mer — Saint-Michel-Chef-Chef", reason:"zone removed (St-Michel-Chef-Chef)", date:"2026-08-07"},
+{name:"Plain-pied 1979 — La Birochère (RÉACTIVÉ)", reason:"zone removed (Birochère/Joselière)", date:"2026-08-07"},
+{name:"Villa de charme 1920s — Tharon-Plage", reason:"zone removed (St-Michel-Chef-Chef)", date:"2026-08-07"},
+{name:"Maison 2012 — La Joselière/Birochère", reason:"zone removed (Birochère/Joselière)", date:"2026-08-07"},
+{name:"Plain-pied 1950 à rénover — La Joselière/Birochère", reason:"zone removed (Birochère/Joselière)", date:"2026-08-07"},
+{name:"Maison neuve 2025 vue mer — Préfailles (enchères)", reason:"zone removed (Préfailles)", date:"2026-08-07"},
+{name:"Maison rénovée 1923 — La Bernerie (aucun travaux)", reason:"zone removed (Bernerie)", date:"2026-08-07"},
+{name:"Plain-pied récent 2020 — Les Moutiers-en-Retz", reason:"zone removed (Moutiers)", date:"2026-08-07"},
+{name:"Maison 1967 — Tharon-Plage", reason:"zone removed (St-Michel-Chef-Chef)", date:"2026-08-07"},
+{name:"Plain-pied 1965 77m² — Saint-Michel-Chef-Chef", reason:"zone removed (St-Michel-Chef-Chef)", date:"2026-08-07"},
+{name:"Maison à rénover 100m² — Les Moutiers-en-Retz (cheapest on board)", reason:"zone removed (Moutiers)", date:"2026-08-07"},
+{name:"Maison néo-bretonne 106m² — Saint-Michel-Chef-Chef (Tharon)", reason:"no_longer_available", date:"2026-08-05"},
+{name:"Maison de caractère 1750/1900 — Les Moutiers-en-Retz", reason:"no_longer_available", date:"2026-08-05"},
+{name:"Plain-pied à rafraîchir — Sainte-Marie (proche port)", reason:"no_longer_available", date:"2026-07-29"},
+{name:"Maison bord de mer — Préfailles (particulier)", reason:"no_longer_available", date:"2026-07-23"},
+{name:"Maison 1980 rénovée 2021 — Les Moutiers-en-Retz", reason:"no_longer_available", date:"2026-07-23"},
+{name:"Plain-pied 2005 — Saint-Michel-Chef-Chef", reason:"no_longer_available", date:"2026-07-23"},
+{name:"Maison années 70 — La Bernerie-en-Retz", reason:"no_longer_available", date:"2026-07-13"},
+{name:"Maison Nantaise 1966 — La Joselière", reason:"over budget ceiling", date:"2026-07-10"},
+{name:"Rare — Boulevard de l'Océan, Sainte-Marie", reason:"over budget ceiling", date:"2026-07-10"},
+{name:"Plain-pied rénové 1975 — Sainte-Marie (hameau)", reason:"over budget ceiling", date:"2026-07-10"},
+{name:"Balnéaire années 30 — Gourmalon", reason:"over budget ceiling", date:"2026-07-10"},
+{name:"Maison de ville en triplex", reason:"no_longer_available", date:"2026-07-09"},
+{name:"Esprit maison — vue sur le port", reason:"no_longer_available", date:"2026-07-01"},
+{name:"Maison de caractère en pierre — Gourmalon", reason:"sold", date:"2026-05-27"},
+{name:"Maison Pornic — jardin S/O", reason:"thumbs down: no character", date:"2026-05-27"},
+{name:"Maison Pornic 4 pièces — 96m²", reason:"post-1980 build (old filter)", date:"2026-05-28"},
+{name:"Maison récente 2017 — Sainte-Marie La Geltière", reason:"post-1980 build (old filter)", date:"2026-05-29"},
+{name:"Maison 2013 rénovée — Birochère-Joselière", reason:"post-1980 build (old filter)", date:"2026-05-29"},
+{name:"Maison 2013 — Gicquel", reason:"post-1980 build (old filter)", date:"2026-06-01"},
+{name:"Maison 2013 — Labbé", reason:"post-1980 build (old filter)", date:"2026-06-01"}
+];
+
+var BADGE_LABEL = {top_pick:"Top pick", character:"Character", price_drop:"Price drop", stale_45d:"Time-sensitive"};
+
+function copyFallback(msg){
+  var ta=document.createElement('textarea');
+  ta.value=msg; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(msg).catch(function(){}); }
+  document.body.removeChild(ta);
+  alert("Copied. Paste this into your Pornic chat in Claude (open the Pornic project if you don't have one open) so it gets saved — this page can't save it on its own.");
+}
+
+function makeBadge(b){
+  var s=document.createElement('span');
+  s.className='cbadge '+b;
+  s.textContent = BADGE_LABEL[b]||b;
+  return s;
+}
+
+function buildCard(item, idx, mode){
+  var card=document.createElement('div');
+  card.className='card'+(item.badges.indexOf('top_pick')>-1?' top-pick':'');
+  card.id=mode+'-card-'+idx;
+
+  var badgeRow=document.createElement('div');
+  badgeRow.className='card-badges';
+  item.badges.forEach(function(b){badgeRow.appendChild(makeBadge(b));});
+  if(mode==='up'){ var ib=document.createElement('span'); ib.className='cbadge interested'; ib.textContent='Interested'; badgeRow.appendChild(ib); }
+  if(badgeRow.children.length) card.appendChild(badgeRow);
+
+  var title=document.createElement('p'); title.className='title'; title.textContent=item.name; card.appendChild(title);
+  var loc=document.createElement('p'); loc.className='loc'; loc.textContent=item.location; card.appendChild(loc);
+
+  var priceRow=document.createElement('div'); priceRow.className='price-row';
+  var price=document.createElement('span'); price.className='price'; price.textContent=fmtEUR(item.price);
+  var m2=document.createElement('span'); m2.className='m2'; m2.textContent=Math.round(item.price/item.surface).toLocaleString('fr-FR')+' €/m²';
+  priceRow.appendChild(price); priceRow.appendChild(m2); card.appendChild(priceRow);
+
+  var meta=document.createElement('p'); meta.className='meta';
+  meta.textContent=item.surface+' m² · '+item.rooms+' pièces · construit '+item.built+' · '+item.agent;
+  card.appendChild(meta);
+
+  var note=document.createElement('p'); note.className='note'; note.textContent=item.note; card.appendChild(note);
+
+  var link=document.createElement('a'); link.className='link'; link.href=item.url; link.target='_blank'; link.rel='noopener';
+  link.textContent="Voir l'annonce"; card.appendChild(link);
+
+  var btnRow=document.createElement('div'); btnRow.className='btn-row';
+
+  if(mode==='active'){
+    var upBtn=document.createElement('button'); upBtn.textContent='Intéressant'; upBtn.setAttribute('data-idx',idx); upBtn.className='btn-up';
+    var downBtn=document.createElement('button'); downBtn.textContent='Pas pour moi'; downBtn.setAttribute('data-idx',idx); downBtn.className='btn-down';
+    btnRow.appendChild(upBtn); btnRow.appendChild(downBtn); card.appendChild(btnRow);
+
+    var panel=document.createElement('div'); panel.className='reason-panel'; panel.id='reason-panel-'+idx;
+    var taxWrap=document.createElement('div');
+    TAXONOMY.forEach(function(t){
+      var lbl=document.createElement('label');
+      var cb=document.createElement('input'); cb.type='checkbox'; cb.value=t.label; cb.className='reason-cb'; cb.setAttribute('data-parent',idx);
+      lbl.appendChild(cb); lbl.appendChild(document.createTextNode(t.label));
+      taxWrap.appendChild(lbl);
+    });
+    panel.appendChild(taxWrap);
+    var other=document.createElement('input'); other.type='text'; other.placeholder='Other — free text'; other.className='reason-other'; other.setAttribute('data-parent',idx);
+    panel.appendChild(other);
+    var confirmBtn=document.createElement('button'); confirmBtn.textContent='Confirm rejection'; confirmBtn.className='btn-confirm'; confirmBtn.setAttribute('data-idx',idx);
+    panel.appendChild(confirmBtn);
+    card.appendChild(panel);
+  } else {
+    var brief=document.createElement('button'); brief.textContent='Prepare visit brief ↗'; brief.className='btn-brief'; brief.setAttribute('data-idx',idx);
+    card.appendChild(brief);
+  }
+  return card;
+}
+
+var activeGrid=document.getElementById('active-grid');
+var activeEmpty=document.getElementById('active-empty');
+if(ACTIVE.length){ if(activeEmpty) activeEmpty.style.display='none'; ACTIVE.forEach(function(item,idx){ activeGrid.appendChild(buildCard(item,idx,'active')); }); }
+else { activeGrid.style.display='none'; }
+
+var upGrid=document.getElementById('up-grid');
+var upEmpty=document.getElementById('up-empty');
+if(THUMBSUP.length){ upEmpty.style.display='none'; THUMBSUP.forEach(function(item,idx){ upGrid.appendChild(buildCard(item,idx,'up')); }); }
+else { upGrid.style.display='none'; }
+
+var archivedList=document.getElementById('archived-list');
+ARCHIVED.forEach(function(a){
+  var row=document.createElement('div'); row.className='arch-row';
+  var left=document.createElement('span'); left.textContent=a.name;
+  var right=document.createElement('span'); right.style.whiteSpace='nowrap'; right.textContent=a.reason+' · '+a.date;
+  row.appendChild(left); row.appendChild(right);
+  archivedList.appendChild(row);
+});
+
+function updateActiveCount(){
+  var n=document.querySelectorAll('#active-grid .card').length;
+  document.getElementById('active-count-label').textContent = n + ' awaiting feedback';
+}
+
+document.querySelectorAll('.btn-up').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var idx=parseInt(btn.getAttribute('data-idx'),10);
+    var item=ACTIVE[idx];
+    copyFallback('👍 ' + item.name + ' — I like this one. Please dig deeper and prepare a full visit brief.');
+  });
+});
+
+document.querySelectorAll('.btn-down').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var idx=btn.getAttribute('data-idx');
+    var panel=document.getElementById('reason-panel-'+idx);
+    panel.style.display = panel.style.display==='block' ? 'none' : 'block';
+  });
+});
+
+document.querySelectorAll('.btn-confirm').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var idx=parseInt(btn.getAttribute('data-idx'),10);
+    var item=ACTIVE[idx];
+    var checked=Array.prototype.slice.call(document.querySelectorAll('.reason-cb[data-parent="'+idx+'"]:checked')).map(function(c){return c.value;});
+    var otherInput=document.querySelector('.reason-other[data-parent="'+idx+'"]');
+    var otherText=otherInput?otherInput.value.trim():'';
+    var msg='👎 ' + item.name + ' — rejected. Reasons: ' + checked.join(', ') + '. Note: ' + otherText;
+    copyFallback(msg);
+    var card=document.getElementById('active-card-'+idx);
+    card.style.opacity='0';
+    setTimeout(function(){ card.remove(); updateActiveCount(); }, 250);
+  });
+});
+
+document.querySelectorAll('.btn-brief').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var idx=parseInt(btn.getAttribute('data-idx'),10);
+    var item=THUMBSUP[idx];
+    copyFallback('Please prepare a full visit brief for ' + item.name + '.');
+  });
+});
+</script>
+</body>
+</html>
