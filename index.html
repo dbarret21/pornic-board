@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pornic Property Board — 2026-09-12</title>
+<style>
+  :root {
+    --bg: #f5f6f8; --card-bg: #ffffff; --text: #1a1a2e; --muted: #6b7280;
+    --accent: #1d4ed8; --green: #16a34a; --red: #dc2626; --amber: #d97706;
+  }
+  * { box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg); color: var(--text); margin: 0; padding: 24px; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 16px; }
+  .filters-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 24px; }
+  .fbadge { background: #e0e7ff; color: #3730a3; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .fbadge.type { background: #dcfce7; color: #166534; }
+  .fbadge.budget { background: #fef3c7; color: #92400e; }
+  section { margin-bottom: 32px; }
+  .section-title { font-size: 16px; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; gap:8px; }
+  .count-pill { background: var(--accent); color: white; border-radius: 10px; padding: 1px 8px; font-size: 12px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+  .prop-card { background: var(--card-bg); border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e5e7eb; transition: opacity 0.25s ease; }
+  .prop-card.top-pick { border: 2px solid var(--accent); box-shadow: 0 2px 8px rgba(29,78,216,0.25); }
+  .prop-card.interested { border-left: 4px solid var(--green); }
+  .card-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+  .badge { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 8px; text-transform: uppercase; letter-spacing: 0.02em; }
+  .badge-toppick { background: var(--accent); color: white; }
+  .badge-character { background: #fce7f3; color: #9d174d; }
+  .badge-drop { background: #dcfce7; color: #166534; }
+  .badge-increase { background: #fee2e2; color: #991b1b; }
+  .badge-stale { background: #fef3c7; color: #92400e; }
+  .badge-readded { background: #e0e7ff; color: #3730a3; }
+  .badge-interested { background: var(--green); color: white; }
+  .badge-other { background: #f3f4f6; color: #374151; }
+  .prop-card h3 { font-size: 15px; margin: 0 0 4px 0; line-height: 1.3; }
+  .loc { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+  .price-row { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .price { font-size: 18px; font-weight: 800; color: var(--accent); }
+  .pps { font-size: 12px; color: var(--muted); }
+  .details { font-size: 13px; color: #374151; margin-bottom: 6px; }
+  .meta { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
+  .note { font-size: 12px; color: #4b5563; max-height: 90px; overflow-y: auto; background: #f9fafb; padding: 8px; border-radius: 6px; margin-bottom: 10px; line-height: 1.4; }
+  .listing-link { display: inline-block; font-size: 12px; color: var(--accent); text-decoration: none; font-weight: 600; margin-bottom: 10px; }
+  .vote-row { display: flex; gap: 8px; }
+  .vote-row button { flex: 1; padding: 8px; border-radius: 8px; border: none; font-size: 12px; font-weight: 700; cursor: pointer; }
+  .btn-up { background: #dcfce7; color: #166534; }
+  .btn-down { background: #fee2e2; color: #991b1b; }
+  .reason-panel { margin-top: 10px; padding: 10px; background: #fff7ed; border-radius: 8px; border: 1px solid #fed7aa; }
+  .reason-title { font-size: 12px; font-weight: 700; margin-bottom: 6px; }
+  .reason-options label { display: block; font-size: 12px; margin-bottom: 4px; }
+  .reason-other { width: 100%; margin-top: 6px; font-size: 12px; padding: 6px; border-radius: 6px; border: 1px solid #d1d5db; resize: vertical; min-height: 40px; }
+  .btn-confirm-reject { margin-top: 8px; width: 100%; padding: 8px; border-radius: 8px; border: none; background: var(--red); color: white; font-weight: 700; cursor: pointer; }
+  details.archived-section summary { cursor: pointer; font-weight: 700; font-size: 14px; padding: 10px 0; }
+  .archived-list { list-style: none; padding: 0; margin: 0; }
+  .archived-list li { font-size: 12px; color: var(--muted); padding: 6px 0; border-bottom: 1px solid #e5e7eb; }
+  .archived-list li.scan-row { color: #9ca3af; font-style: italic; }
+  .archived-list .reason { color: #9ca3af; }
+  .limitation-note { background: #fef3c7; border: 1px solid #fde68a; border-radius: 8px; padding: 10px 14px; font-size: 12px; color: #92400e; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<h1>🏡 Pornic Property Board</h1>
+<div class="subtitle">Mis à jour le 2026-09-12 — David's real estate tracker</div>
+<div class="limitation-note">Vote copier-coller : cliquer "Confirmer le rejet" ou "Intéressant" copie un message dans votre presse-papiers. Collez-le dans votre chat Pornic sur Claude pour qu'il soit enregistré — cette page ne peut pas sauvegarder elle-même.</div>
+<div class="filters-row">
+  <span class="fbadge budget">Budget : 200,000–420,000 € FAI</span>
+  <span class="fbadge budget">Surface : 80–140 m²</span>
+  <span class="fbadge type">Maison ou appartement (terrain seul exclu)</span>
+  <span class="fbadge">Gourmalon</span><span class="fbadge">Sainte-Marie-sur-Mer</span><span class="fbadge">La Bernerie-en-Retz</span><span class="fbadge">Préfailles</span><span class="fbadge">La Joselière</span><span class="fbadge">La Birochère</span>
+</div>
+
+<section>
+  <div class="section-title">Annonces actives <span class="count-pill" id="active-count">16</span></div>
+  <div class="grid" id="active-grid">
+    
+<div class="prop-card" id="active-card-0" data-idx="0">
+  <div class="card-badges"></div>
+  <h3>Appartement T3 72m² DPE C/GES A ascenseur — Birochère-Joselière</h3>
+  <div class="loc">Pornic — Birochère-Joselière</div>
+  <div class="price-row"><span class="price">396 000 €</span><span class="pps">5 511 €/m²</span></div>
+  <div class="details">71.85 m² · 3 pièces</div>
+  <div class="meta">Construction : 1989 &nbsp;·&nbsp; Agent : Agence L&#x27;Immobilière du Littoral</div>
+  <div class="note">NEW 2026-08-30. Appartement T3, 71.85m², 4e étage/5 avec ascenseur, copropriété de 18 lots (charges 1300€/an, pas de procédure en cours), balcon + terrasse, parking + possibilité garage, sans vis-à-vis, plein sud. DPE C / GES A — best-in-class energy performance on today&#x27;s finds, état &#x27;Comme neuf&#x27; despite 1989 construction. Caractéristiques list &#x27;Calme&#x27; explicitly. Proximité gare, commerces et port per the listing text. Covers both La Birochère and La Joselière (SeLoger treats them as one combined quartier, &#x27;Birochère-Joselière&#x27;). Strongest apartment candidate on energy performance and elevator access. RE-VERIFIED LIVE 09/01 — still active, unchanged. RE-VERIFIED LIVE 09/02 — still active, unchanged. RE-VERIFIED LIVE 09/03 — still active, unchanged. RE-VERIFIED LIVE 09/05 — still active, unchanged at €396,000. Appartement — non soumis aux filtres jardin/DPE-maison/plain-pied du 09-04.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonce/26WCHDBLJZH7" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="0" data-name="Appartement T3 72m² DPE C/GES A ascenseur — Birochère-Joselière">👍 Intéressant</button>
+    <button class="btn-down" data-idx="0" data-name="Appartement T3 72m² DPE C/GES A ascenseur — Birochère-Joselière">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-0" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="0" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="0" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-0" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="0" data-name="Appartement T3 72m² DPE C/GES A ascenseur — Birochère-Joselière">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card top-pick" id="active-card-1" data-idx="1">
+  <div class="card-badges"><span class="badge badge-toppick">TOP PICK</span></div>
+  <h3>Maison bois 2012 113m² jardin clos 450m² en impasse privée DPE C — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">407 550 €</span><span class="pps">3 607 €/m²</span></div>
+  <div class="details">113 m² · 5 pièces · 450 m² terrain</div>
+  <div class="meta">Construction : 2012 &nbsp;·&nbsp; Agent : Bleu Horizon Cabinet Immobilier</div>
+  <div class="note">NEW 2026-09-01. &#x27;Dans une impasse privée&#x27; — clears calm-environment requirement explicitly (impasse = favourable example in the standing rule) — à 1500m de la plage et du centre. Ossature bois 2012, DPE C/GES A (meilleure performance énergétique du board pour une maison individuelle avec ce niveau de jardin), état &#x27;Entretenu&#x27; (pas de travaux). 4 chambres, mezzanine/bureau à l&#x27;étage, garage 30m², jardin clos et arboré 450m², poêle à granules. Tag &#x27;Calme&#x27; confirmé. Prix proche du plafond (407 550€, sous les 420K€) mais move-in-ready sans risque de rénovation — bon compromis face aux candidats DPE E/F du jour. Honoraires acquéreur 4,5%, net vendeur 390 000€. RE-VERIFIED LIVE 09/02 — still active, unchanged. TOP PICK 09/02: promoted after both Préfailles apartments (SL-26U8TKU4T9XM and its sister SL-26PY8BDJYN1F) sold and were removed from the board today. Best all-around candidate now standing: DPE C, no renovation needed, explicit calm confirmation via impasse, largest garden among move-in-ready houses on the board, and comfortably under the €420K ceiling. RE-VERIFIED LIVE 09/03 — still active, unchanged. RE-VERIFIED LIVE 09/05 — still active, unchanged at €407,550. Passe tous les filtres actuels (jardin 450m², DPE C, 113m², 4 chambres).</div>
+  <a class="listing-link" href="https://www.seloger.com/annonces/achat/maison/la-bernerie-en-retz-44/247415737.htm" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="1" data-name="Maison bois 2012 113m² jardin clos 450m² en impasse privée DPE C — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="1" data-name="Maison bois 2012 113m² jardin clos 450m² en impasse privée DPE C — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-1" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="1" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="1" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-1" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="1" data-name="Maison bois 2012 113m² jardin clos 450m² en impasse privée DPE C — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-2" data-idx="2">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 80m² DPE A terrain 669m² — Préfailles</h3>
+  <div class="loc">Préfailles</div>
+  <div class="price-row"><span class="price">410 456 €</span><span class="pps">5 131 €/m²</span></div>
+  <div class="details">80 m² · 4 pièces · 3 chambres · 669 m² terrain</div>
+  <div class="meta">Construction : 2026 (CCMI - construction neuve) &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">Contrat de construction (CCMI) terrain+maison neuve, pas un bien existant immédiatement habitable — délai de construction ~12-18 mois à anticiper. Prix 410 456€ proche du plafond budget (420K, marge ~2%). DPE A. Pas d&#x27;information sur le calme du secteur dans l&#x27;annonce. RE-VERIFIED LIVE 09/05 — still active, unchanged at €410,456. Passe tous les filtres actuels (jardin 669m², DPE A, 80m², 3 chambres).</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/277327815" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="2" data-name="Terrain + maison neuve 80m² DPE A terrain 669m² — Préfailles">👍 Intéressant</button>
+    <button class="btn-down" data-idx="2" data-name="Terrain + maison neuve 80m² DPE A terrain 669m² — Préfailles">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-2" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="2" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="2" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-2" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="2" data-name="Terrain + maison neuve 80m² DPE A terrain 669m² — Préfailles">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-3" data-idx="3">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 90m² DPE A terrain 450m² — 600m plages, environnement calme — Préfailles</h3>
+  <div class="loc">Préfailles</div>
+  <div class="price-row"><span class="price">272 796 €</span><span class="pps">3 031 €/m²</span></div>
+  <div class="details">90 m² · 4 pièces · 3 chambres · 450 m² terrain</div>
+  <div class="meta">Construction : 2026 (CCMI - construction neuve) &nbsp;·&nbsp; Agent : L&#x27;ADRESSE SAINT NAZAIRE / MORTIER CONSTRUCTION PORNIC</div>
+  <div class="note">Meilleur rapport prix/m² du scan du jour (candidat valeur, pas top pick vu le délai CCMI) (3 031€/m²), à 600m des plages de Préfailles. Description mentionne explicitement &#x27;environnement calme&#x27; — clears the calm_environment_required filter directly, pas une simple inférence. Reste un contrat de construction (CCMI), donc délai de livraison ~12-18 mois et pas de bien existant à visiter tout de suite — à peser contre l&#x27;avantage prix. RE-VERIFIED LIVE 09/05 — still active, unchanged at €272,796. Passe tous les filtres actuels (jardin 450m², DPE A, 90m², 3 chambres).</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/271470719" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="3" data-name="Terrain + maison neuve 90m² DPE A terrain 450m² — 600m plages, environnement calme — Préfailles">👍 Intéressant</button>
+    <button class="btn-down" data-idx="3" data-name="Terrain + maison neuve 90m² DPE A terrain 450m² — 600m plages, environnement calme — Préfailles">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-3" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="3" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="3" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-3" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="3" data-name="Terrain + maison neuve 90m² DPE A terrain 450m² — 600m plages, environnement calme — Préfailles">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-4" data-idx="4">
+  <div class="card-badges"></div>
+  <h3>Maison familiale plain-pied 95m² DPE B jardin 826m² atelier+dépendance pierre — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">407 000 €</span><span class="pps">4 284 €/m²</span></div>
+  <div class="details">95 m² · 3 pièces · 2 chambres · 826 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : iad France — Mélanie Mazeret</div>
+  <div class="note">À 1km du centre-ville et des plages. Vie de plain-pied, jardin, atelier + dépendance en pierre — bon potentiel d&#x27;usage annexe (atelier/rangement voire studio à terme). DPE B, un des meilleurs du board. Grand terrain (826m²) pour la zone. RE-VERIFIED LIVE 09/05 — still active, unchanged at €407,000. Passe tous les filtres actuels (jardin 826m² — le plus grand du board, DPE B, 95m², 2 chambres, &#x27;aucun gros travaux à prévoir&#x27;). Sérieux concurrent au top_pick. UPDATE 2026-09-07: same property also listed non-exclusively via GAUTIER Audrey Capifrance (SL-26MZCAC5IS11) at 404,000€ — 3,000€ below this agency&#x27;s 407,000€ asking. Useful negotiation leverage: cite the lower parallel listing when making an offer.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonces/achat/maison/la-bernerie-en-retz-44/266677193.htm" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="4" data-name="Maison familiale plain-pied 95m² DPE B jardin 826m² atelier+dépendance pierre — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="4" data-name="Maison familiale plain-pied 95m² DPE B jardin 826m² atelier+dépendance pierre — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-4" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="4" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="4" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-4" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="4" data-name="Maison familiale plain-pied 95m² DPE B jardin 826m² atelier+dépendance pierre — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-5" data-idx="5">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 80m² DPE A terrain 479m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">237 153 €</span><span class="pps">2 964 €/m²</span></div>
+  <div class="details">80 m² · 4 pièces · 3 chambres · 479 m² terrain</div>
+  <div class="meta">Construction : 2026 (CCMI - construction neuve) &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">Contrat CCMI, un parmi plusieurs lots similaires proposés par des constructeurs concurrents à La Bernerie-en-Retz ce mois-ci (voir note de marché) — probable nouveau lotissement. Bon prix (2 964€/m²) mais délai de construction à anticiper. RE-VERIFIED LIVE 09/05 — still active, unchanged at €237,153. Passe tous les filtres actuels (jardin 479m², DPE A, 80m², 3 chambres).</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/275263613" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="5" data-name="Terrain + maison neuve 80m² DPE A terrain 479m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="5" data-name="Terrain + maison neuve 80m² DPE A terrain 479m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-5" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="5" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="5" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-5" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="5" data-name="Terrain + maison neuve 80m² DPE A terrain 479m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-6" data-idx="6">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 90m² DPE A jardin 479m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">256 591 €</span><span class="pps">2 851 €/m²</span></div>
+  <div class="details">90 m² · 4 pièces · 3 chambres · 479 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Programme neuf &#x27;MAISON PRIVAT&#x27; à La Bernerie-en-Retz — DPE A, 90m² habitables, terrain 479m². Meilleur prix/m² du groupe de 7 modèles trouvés sur ce même programme aujourd&#x27;hui (voir SLC-278788335, 278583695, 278788337, 278788333, 277654987, 277735141). Passe tous les filtres actuels (budget, surface, jardin≥300m², DPE A, chambres/pièces).</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/278255365" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="6" data-name="Terrain + maison neuve 90m² DPE A jardin 479m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="6" data-name="Terrain + maison neuve 90m² DPE A jardin 479m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-6" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="6" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="6" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-6" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="6" data-name="Terrain + maison neuve 90m² DPE A jardin 479m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-7" data-idx="7">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 90m² DPE A jardin 750m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">366 407 €</span><span class="pps">4 071 €/m²</span></div>
+  <div class="details">90 m² · 4 pièces · 3 chambres · 750 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 90m², terrain 750m² (parmi les plus grands du programme). Passe tous les filtres actuels.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/278788335" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="7" data-name="Terrain + maison neuve 90m² DPE A jardin 750m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="7" data-name="Terrain + maison neuve 90m² DPE A jardin 750m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-7" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="7" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="7" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-7" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="7" data-name="Terrain + maison neuve 90m² DPE A jardin 750m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-8" data-idx="8">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 80m² DPE A jardin 484m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">289 251 €</span><span class="pps">3 616 €/m²</span></div>
+  <div class="details">80 m² · 4 pièces · 3 chambres · 484 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 80m² (surface minimum du filtre), terrain 484m². Bon rapport prix/surface. Passe tous les filtres actuels.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/278583695" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="8" data-name="Terrain + maison neuve 80m² DPE A jardin 484m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="8" data-name="Terrain + maison neuve 80m² DPE A jardin 484m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-8" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="8" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="8" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-8" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="8" data-name="Terrain + maison neuve 80m² DPE A jardin 484m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-9" data-idx="9">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 95m² DPE A jardin 750m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">408 807 €</span><span class="pps">4 303 €/m²</span></div>
+  <div class="details">95 m² · 4 pièces · 3 chambres · 750 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 95m², terrain 750m². Prix proche du plafond (420K) mais jardin généreux. Passe tous les filtres actuels.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/278788337" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="9" data-name="Terrain + maison neuve 95m² DPE A jardin 750m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="9" data-name="Terrain + maison neuve 95m² DPE A jardin 750m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-9" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="9" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="9" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-9" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="9" data-name="Terrain + maison neuve 95m² DPE A jardin 750m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-10" data-idx="10">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 96m² DPE A jardin 750m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">393 279 €</span><span class="pps">4 097 €/m²</span></div>
+  <div class="details">96 m² · 4 pièces · 3 chambres · 750 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 96m², terrain 750m². Passe tous les filtres actuels.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/278788333" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="10" data-name="Terrain + maison neuve 96m² DPE A jardin 750m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="10" data-name="Terrain + maison neuve 96m² DPE A jardin 750m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-10" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="10" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="10" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-10" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="10" data-name="Terrain + maison neuve 96m² DPE A jardin 750m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-11" data-idx="11">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 95m² DPE A jardin 621m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">384 240 €</span><span class="pps">4 045 €/m²</span></div>
+  <div class="details">95 m² · 4 pièces · 3 chambres · 621 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 95m², terrain 621m². Passe tous les filtres actuels.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/277654987" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="11" data-name="Terrain + maison neuve 95m² DPE A jardin 621m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="11" data-name="Terrain + maison neuve 95m² DPE A jardin 621m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-11" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="11" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="11" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-11" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="11" data-name="Terrain + maison neuve 95m² DPE A jardin 621m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-12" data-idx="12">
+  <div class="card-badges"></div>
+  <h3>Terrain + maison neuve 85m² DPE A jardin 310m² — La Bernerie-en-Retz</h3>
+  <div class="loc">La Bernerie-en-Retz</div>
+  <div class="price-row"><span class="price">300 446 €</span><span class="pps">3 535 €/m²</span></div>
+  <div class="details">85 m² · 4 pièces · 3 chambres · 310 m² terrain</div>
+  <div class="meta">Construction : N/A &nbsp;·&nbsp; Agent : MAISON PRIVAT</div>
+  <div class="note">NOUVEAU 09-05. Même programme neuf &#x27;MAISON PRIVAT&#x27; — DPE A, 85m², terrain 310m² (juste au-dessus du seuil garden_min_sqm=300 — à confirmer sur plan/visite). Passe tous les filtres actuels de justesse sur le jardin.</div>
+  <a class="listing-link" href="https://www.seloger-construire.com/detail/277735141" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="12" data-name="Terrain + maison neuve 85m² DPE A jardin 310m² — La Bernerie-en-Retz">👍 Intéressant</button>
+    <button class="btn-down" data-idx="12" data-name="Terrain + maison neuve 85m² DPE A jardin 310m² — La Bernerie-en-Retz">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-12" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="12" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="12" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-12" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="12" data-name="Terrain + maison neuve 85m² DPE A jardin 310m² — La Bernerie-en-Retz">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-13" data-idx="13">
+  <div class="card-badges"></div>
+  <h3>Maison 2012 104m² jardin 330m² (DPE non confirmé) — Birochère-Joselière</h3>
+  <div class="loc">Birochère-Joselière, Pornic</div>
+  <div class="price-row"><span class="price">399 000 €</span><span class="pps">3 837 €/m²</span></div>
+  <div class="details">104 m² · 5 pièces · 4 chambres · 330 m² terrain</div>
+  <div class="meta">Construction : 2012 &nbsp;·&nbsp; Agent : Zefir / Camille Lambert</div>
+  <div class="note">NOUVEAU 09-05. Maison récente (2012), 104m², 4 chambres, terrain 330m² dont ~250m² de jardin proprement dit, garage. ATTENTION — DPE AMBIGU: le champ structuré de l&#x27;annonce indique &#x27;DPE : En cours&#x27; (diagnostic non encore réalisé/publié), mais le texte descriptif généré affirme &#x27;Le classement énergétique en C constitue un élément rassurant&#x27;. C&#x27;est une INCOHÉRENCE dans l&#x27;annonce elle-même — à vérifier explicitement auprès de l&#x27;agence avant toute visite, ne pas supposer C. Si le DPE réel est D/E/F au lieu de C, ce bien ne remplirait plus dpe_max_house=C. Passe les autres filtres (budget, surface, jardin, chambres).</div>
+  <a class="listing-link" href="https://www.seloger.com/annonce/achat/pays-de-la-loire/loire-atlantique-44/pornic-44210/26AMI3MVEKAV" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="13" data-name="Maison 2012 104m² jardin 330m² (DPE non confirmé) — Birochère-Joselière">👍 Intéressant</button>
+    <button class="btn-down" data-idx="13" data-name="Maison 2012 104m² jardin 330m² (DPE non confirmé) — Birochère-Joselière">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-13" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="13" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="13" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-13" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="13" data-name="Maison 2012 104m² jardin 330m² (DPE non confirmé) — Birochère-Joselière">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-14" data-idx="14">
+  <div class="card-badges"><span class="badge badge-increase">HAUSSE DE PRIX</span></div>
+  <h3>Pavillon récent 104m² DPE C jardin clos 435m² — Birochère-Joselière</h3>
+  <div class="loc">Birochère-Joselière</div>
+  <div class="price-row"><span class="price">435 000 €</span><span class="pps">4 183 €/m²</span></div>
+  <div class="details">104 m² · 5 pièces · 4 chambres · 435 m² terrain</div>
+  <div class="meta">Construction : 2012 &nbsp;·&nbsp; Agent : efficity (Yohann Deniaud)</div>
+  <div class="note">Exclusivité, quartier calme, exposition plein sud, &lt;1km plage de la Joselière, aucun gros travaux. Jardin clos 435m² &gt; seuil 300m². DPE C conforme au filtre maison. ATTENTION: ressemble fortement à l&#x27;annonce active &#x27;Maison 2012 104m² jardin 330m² — Birochère-Joselière&#x27; (Zefir, réf 26AMI3MVEKAV, même prix d&#x27;origine 399K, même année 2012, même surface 104m²) — probable double mandat sur le même bien avec un terrain déclaré différemment (435 vs 330m²). À vérifier avant visite pour ne pas doubler les démarches et pour comparer les honoraires d&#x27;agence. PRIX EN HAUSSE 2026-09-12: re-vérifié via page de recherche SeLoger (agent efficity/Yohann Deniaud confirmé identique) — passé de 399 000€ à 435 000€ (+36 000€, +9%), DPE C inchangé. Ceci dépasse maintenant le plafond budget de 420K€ — ne devrait plus être compté comme un candidat dans le budget tant que le prix reste à ce niveau; à réévaluer si le prix rebaisse.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonce/achat/pays-de-la-loire/loire-atlantique-44/pornic-44210/26PJXFUWTAEP" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="14" data-name="Pavillon récent 104m² DPE C jardin clos 435m² — Birochère-Joselière">👍 Intéressant</button>
+    <button class="btn-down" data-idx="14" data-name="Pavillon récent 104m² DPE C jardin clos 435m² — Birochère-Joselière">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-14" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="14" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="14" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-14" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="14" data-name="Pavillon récent 104m² DPE C jardin clos 435m² — Birochère-Joselière">Confirmer le rejet</button>
+  </div>
+</div>
+
+<div class="prop-card" id="active-card-15" data-idx="15">
+  <div class="card-badges"></div>
+  <h3>Maison plain-pied 96m² DPE C jardin 1052m² Quartier des Ormes — Sainte-Marie-sur-Mer</h3>
+  <div class="loc">Pornic — Sainte Marie</div>
+  <div class="price-row"><span class="price">364 000 €</span><span class="pps">3 792 €/m²</span></div>
+  <div class="details">96 m² · 4 pièces · 3 chambres · 1052 m² terrain</div>
+  <div class="meta">Construction : 2004 &nbsp;·&nbsp; Agent : Cabinet Guémené - La Montagne Immobilier / Fabrice Saint-Just</div>
+  <div class="note">NOUVEAU 09-10. Quartier des Ormes, Sainte-Marie-sur-Mer. Plain-pied 2004, 96m², 3 chambres, garage attenant et communiquant, terrain 1052m² (l&#x27;un des plus grands du board). DPE C / Classe climat A — conforme au filtre maison. Honoraires acquéreur 4% (prix hors honoraires 350 000€). AUCUNE mention explicite de calme dans l&#x27;annonce (&#x27;quartier des Ormes&#x27; sans qualificatif) — silence à traiter comme question ouverte, pas comme calme supposé, conformément à la règle standing. Passe tous les autres filtres actuels (budget, surface, jardin≥300m², DPE C, chambres/pièces).</div>
+  <a class="listing-link" href="https://www.seloger.com/annonce/achat/pays-de-la-loire/loire-atlantique-44/pornic-44210/2636K154VPFW" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+  <div class="vote-row">
+    <button class="btn-up" data-idx="15" data-name="Maison plain-pied 96m² DPE C jardin 1052m² Quartier des Ormes — Sainte-Marie-sur-Mer">👍 Intéressant</button>
+    <button class="btn-down" data-idx="15" data-name="Maison plain-pied 96m² DPE C jardin 1052m² Quartier des Ormes — Sainte-Marie-sur-Mer">👎 Pas pour moi</button>
+  </div>
+  <div class="reason-panel" id="reason-panel-15" style="display:none;">
+    <div class="reason-title">Pourquoi ce rejet ?</div>
+    <div class="reason-options">
+      <label><input type="checkbox" class="reason-cb" data-idx="15" value="Too far from the sea"> Too far from the sea</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="No / insufficient garden"> No / insufficient garden</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Too much renovation needed"> Too much renovation needed</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Wrong zone / neighbourhood"> Wrong zone / neighbourhood</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Overpriced for the condition"> Overpriced for the condition</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Layout or size doesn&#x27;t work"> Layout or size doesn&#x27;t work</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Environment not calm / too noisy"> Environment not calm / too noisy</label><label><input type="checkbox" class="reason-cb" data-idx="15" value="Other"> Other</label>
+    </div>
+    <textarea class="reason-other" id="reason-other-15" placeholder="Précision (si Autre)"></textarea>
+    <button class="btn-confirm-reject" data-idx="15" data-name="Maison plain-pied 96m² DPE C jardin 1052m² Quartier des Ormes — Sainte-Marie-sur-Mer">Confirmer le rejet</button>
+  </div>
+</div>
+  </div>
+</section>
+
+<section>
+  <div class="section-title">👍 Intéressant <span class="count-pill">3</span></div>
+  <div class="grid">
+    
+<div class="prop-card interested">
+  <div class="card-badges"><span class="badge badge-interested">INTERESTED</span><span class="badge badge-readded">RÉINTÉGRÉ</span></div>
+  <h3>Plain-pied 85m² jardin clos 700m² — Pornic centre</h3>
+  <div class="loc">Pornic centre</div>
+  <div class="price-row"><span class="price">387 000 €</span><span class="pps">4 553 €/m²</span></div>
+  <div class="details">85 m² · 5 pièces · 700 m² terrain</div>
+  <div class="meta">Construction : 2003 &nbsp;·&nbsp; Agent : Nantes Sud Immobilier / Votre Immobilier Pornicais</div>
+  <div class="note">RE-ADDED 08/19 at David&#x27;s explicit request (he forwarded a SeLoger email alert link for this exact listing). NOTE FOR THE RECORD: this listing was previously archived thumbs_down on 08/17 with reason &#x27;Wrong zone / neighbourhood&#x27; — David is overriding that rejection directly. VERIFIED LIVE 08/19 — €387,000 (€375,000 hors honoraires + €12,000 honoraires acquéreur), 85m² plain-pied, 3 chambres (1 en suite), 700m² terrain clos et arboré, garage + carport + 2 cabanons, terrasse avec store banne, DPE D/GES D, built 2003, agent Nantes Sud Immobilier (Votre Immobilier Pornicais, ref 1186). Clears budget/surface/garden hard filters comfortably (700m² well above the 600m² minimum). RE-VERIFIED LIVE 08/20 — still active, unchanged at €387,000. MARKED INTERESTING 08/20 — David confirmed via thumbs-up, full visit brief requested. RE-VERIFIED LIVE 08/21 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/22 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/23 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/24 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/25 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/26 — still active, unchanged at €387,000.
+
+GRANDFATHERED 2026-08-26: Pornic centre / vieux bourg was dropped from the geographic scope this session (narrowed back to a 6-zone list that excludes centre). David was asked directly and chose to keep this listing in thumbs-up despite that. Only NEW listings must match the narrowed zone list going forward; this one is kept on its merits. RE-VERIFIED LIVE 08/27 — still active, unchanged at €387,000. RE-VERIFIED LIVE 08/28 — still active, unchanged at €387,000. RE-VERIFIED LIVE 09/01 — still active, unchanged. RE-VERIFIED LIVE 09/02 — still active, unchanged at €387,000. RE-VERIFIED LIVE 09/03 — still active, unchanged.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonces/achat/maison/pornic-44/centre/275700111.htm" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+</div>
+
+<div class="prop-card interested">
+  <div class="card-badges"><span class="badge badge-interested">INTERESTED</span></div>
+  <h3>Plain-pied 71m² à 2 pas du bourg et des plages — Sainte-Marie</h3>
+  <div class="loc">Pornic — Sainte-Marie-sur-Mer</div>
+  <div class="price-row"><span class="price">334 500 €</span><span class="pps">4 711 €/m²</span></div>
+  <div class="details">71 m² · 4 pièces · 311 m² terrain</div>
+  <div class="meta">Construction : 1960 &nbsp;·&nbsp; Agent : Distinction Immobilier</div>
+  <div class="note">MARKED INTERESTING 08/12, RECONFIRMED ACTIVE 08/13 (unchanged, €334,500). 71m² habitable (70.97m² per official DPE), 311m² terrain clos et paysager, exposition sud, jardin confirmé. DPE D (225 kWh/m²/an) / GES B (8 kgCO2/m²/an), CONFIRMED via official DPE n°2644E0246305E dated 27/01/2026, received from owner — valid until 26/01/2036, established by certified diagnostiqueur (Nicolas Gautier, Cabinet Diagnostics Nantais). Build year: listing says 1960, DPE says 1950 (estimated) — minor discrepancy. Owner of record: COPANEMA — RESEARCHED 08/12 via annuaire-entreprises.data.gouv.fr: small family SCI (societe civile immobiliere), SIREN 835113234, created 30/01/2018, EUR1,000 capital, no employees, rental activity (NAF 68.20B). Originally registered at 1 Place de l&#x27;Eglise, Sainte-Marie-sur-Mer (this property&#x27;s area) until moving siege to Saint-Brevin-les-Pins 02/06/2025. Managed by Emmanuel Charaud (b.1971) and Catherine Lescop (b.1977), plus associate entity CACHACA. Reads as a private family selling their own rental house via SCI structure, not a portfolio/institutional disposal. DPE reveals: walls under-insulated on 4/5 faces (&#x27;insuffisante&#x27;, 49% of heat loss) — essential works (ext. wall insulation + VMC upgrade) quoted €23,869-49,137 in the DPE itself to reach DPE C; optional (not a passoire, no compliance pressure). Heating already modernised: poêle bûches (2019) + PAC air/air (2025, doubles as AC). Hot water: 40L chauffe-eau (2019) — small. No exterior shutters on any window (flagged as cause of insufficient &#x27;confort d&#x27;été&#x27; in the DPE). Honoraires charge vendeur. À proximité immédiate du bourg de Sainte-Marie-sur-Mer et de ses plages — walkable to both bourg and beach, best walkability on the board. ASSUMPTION: exact walk time not stated by agent — verify on visit. Full visit brief completed and amended with DPE findings — see Visit Brief file in Pornic folder. Negotiating angle: DPE&#x27;s own €24-49K improvement estimate is cite-able leverage given premium €/m² pricing. NOT RE-VERIFIED 08/16, 08/17, or 08/18 (Chrome unavailable). RE-VERIFIED LIVE 08/19 — still active, unchanged at €334,500/71m²/311m² terrain. RE-VERIFIED LIVE 08/20 — still active, unchanged. RE-VERIFIED LIVE 08/21 — still active, unchanged. RE-VERIFIED LIVE 08/22 — still active, unchanged. RE-VERIFIED LIVE 08/23 — still active, unchanged at €334,500. RE-VERIFIED LIVE 08/24 — still active, unchanged at €334,500. RE-VERIFIED LIVE 08/25 — still active, unchanged at €334,500. RE-VERIFIED LIVE 08/26 — still active, unchanged at €334,500. RE-VERIFIED LIVE 08/27 — still active, unchanged at €334,500. RE-VERIFIED LIVE 08/28 — still active, unchanged at €334,500. RE-VERIFIED LIVE 09/01 — still active, unchanged. RE-VERIFIED LIVE 09/02 — still active, unchanged at €334,500. RE-VERIFIED LIVE 09/03 — still active, unchanged.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/265235911.htm" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+</div>
+
+<div class="prop-card interested">
+  <div class="card-badges"><span class="badge badge-interested">INTERESTED</span><span class="badge badge-stale">45+ JOURS</span></div>
+  <h3>Maison familiale 1975 — Sainte-Marie (à rafraîchir)</h3>
+  <div class="loc">Pornic — Sainte-Marie-sur-Mer</div>
+  <div class="price-row"><span class="price">365 000 €</span><span class="pps">3 763 €/m²</span></div>
+  <div class="details">97 m² · 5 pièces · 852 m² terrain</div>
+  <div class="meta">Construction : 1975 &nbsp;·&nbsp; Agent : Alphore - Centre Immobilier / Françoise Tenenhaus</div>
+  <div class="note">CONFIRMED ACTIVE (08/14 — day 42). Re-fetched directly from seloger.com: still €365,000, unchanged. Build 1975. 97m², 4 chambres + bureau, 852m² wooded plot, veranda 14m², terrace 45m², garage ~50m². DPE D / GES B, gas radiators, honoraires charge vendeur. Needs &#x27;rafraîchissement&#x27; — cosmetic renovation (light reno tier). 10 min from Sainte-Marie bourg/beaches, not walkable. Agent: Françoise Tenenhaus (Alphore, Saint-Nazaire). NOT RE-VERIFIED 08/16, 08/17, or 08/18 — Chrome extension unavailable all three runs; price/status carried forward unchanged from 08/14. RE-VERIFIED LIVE 08/19 — still active, unchanged at €365,000/97m². Day count now 47 since first_seen 07/03, well past the 45-day stale threshold — still flagged &#x27;stale_45d&#x27; as a motivated-seller candidate. Worth a direct call to the agent to gauge flexibility given the time on market. RE-VERIFIED LIVE 08/20 — still active, unchanged at €365,000. Day count now 48. RE-VERIFIED LIVE 08/21 — still active, unchanged at €365,000. Day count now 49 — 5th consecutive week on market past the stale threshold; worth escalating the direct-call suggestion given no other candidates have entered the board in that time. RE-VERIFIED LIVE 08/22 — still active, unchanged at €365,000. Day count now 50. RE-VERIFIED LIVE 08/23 — still active, unchanged at €365,000. Day count now 51 — 7+ weeks on market; the direct-call-to-agent suggestion stands unactioned across multiple runs. RE-VERIFIED LIVE 08/24 — still active, unchanged at €365,000. Day count now 52 — the direct-call-to-agent suggestion remains unactioned. RE-VERIFIED LIVE 08/25 — still active, unchanged at €365,000. Day count now 53 — 7.5+ weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs now. RE-VERIFIED LIVE 08/26 — still active, unchanged at €365,000. Day count now 54 — 7.7 weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs now, worth escalating. RE-VERIFIED LIVE 08/27 — still active, unchanged at €365,000. Day count now 55 since first_seen 07/03 — 7.9 weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs, now the longest-unactioned open item on the board. RE-VERIFIED LIVE 08/28 — still active, unchanged at €365,000. Day count now 56 since first_seen 07/03 — 8 weeks on market; the direct-call-to-agent suggestion remains unactioned. RE-VERIFIED LIVE 09/01 — still active, unchanged. Day count now 60 since first_seen 07/03 — 8.6 weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs. RE-VERIFIED LIVE 09/02 — still active, unchanged at €365,000. Day count now 61 since first_seen 07/03 — 8.7 weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs now. RE-VERIFIED LIVE 09/03 — still active, unchanged at €365,000. Day count now 62 since first_seen 07/03 — 8.9 weeks on market; the direct-call-to-agent suggestion remains unactioned across many consecutive runs now.</div>
+  <a class="listing-link" href="https://www.seloger.com/annonces/achat/maison/pornic-44/sainte-marie/266435963.htm" target="_blank" rel="noopener">Voir l'annonce ↗</a>
+</div>
+  </div>
+</section>
+
+<details class="archived-section">
+  <summary>Archivées (102)</summary>
+  <ul class="archived-list">
+    <li class="scan-row"><strong>2026-09-12</strong> — Daily scan — Chrome + browser-pane access unavailable this run (both declined/unreachable); partial verification via SeLoger search-result-page cross-referencing; 1 price increase detected (26PJXFUWTAEP); 0 new qualifying listings</li>
+<li class="scan-row"><strong>2026-09-11</strong> — Daily scan — all 16 active + 3 thumbs_up listings re-verified live, unchanged; 0 new qualifying listings found</li>
+<li class="scan-row"><strong>2026-09-10</strong> — Daily scan — all 15 active + 3 thumbs_up listings re-verified live, unchanged; 1 new qualifying listing added (Cabinet Guémené, Sainte-Marie-sur-Mer)</li>
+<li class="scan-row"><strong>2026-09-02</strong> — Daily scan — 2 Préfailles listings sold/removed (incl. former top pick + its sister); 4 new qualifying listings added (all La Bernerie-en-Retz/Birochère-Joselière, incl. 2 likely dual-mandate pairs); new top pick assigned; all other tracked listings re-verified live, unchanged</li>
+<li><strong></strong> — Appartement T3 80m² RDJ jardin privatif — Préfailles (env. calme, petite copro) <span class="reason">(no_longer_available — Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted). Was the board&#x27;s top pick since 08/30 — best price/m² on the board (3 371€/m²) with private garden and small 5-lot copropriété. Its sister unit SL-26PY8BDJYN1F sold in the same run — both units of the QUIROUARD copropriété are now gone from the market within days of each other.)</span></li>
+<li><strong></strong> — Appartement T4 72m² RDJ jardin privatif — Préfailles (sœur du T3 déjà suivi, même petite copro) <span class="reason">(no_longer_available — Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted). Sister unit to the board&#x27;s former top pick SL-26U8TKU4T9XM, same small copropriété QUIROUARD — both sold/removed in the same run.)</span></li>
+<li class="scan-row"><strong>2026-09-01</strong> — Daily scan — 3 new qualifying listings added (1x Préfailles, 2x La Bernerie-en-Retz), after catching and reverting 3 same-day duplicate-ID additions; all 9 tracked listings re-verified live, unchanged</li>
+<li class="scan-row"><strong>2026-08-31</strong> — Daily scan — 1 new qualifying listing added (Sainte-Marie maison de ville); all 8 tracked listings re-verified live, unchanged</li>
+<li><strong></strong> — Plain-pied 1991 120m² terrain 2144m² arboré + verger — Quartier des Olivettes, Pornic <span class="reason">(thumbs_down — Reasons: Mauvaise zone. Note: (none). Ex-top pick of the board — was previously grandfathered in despite sitting outside the 6-zone geographic scope (Quartier des Olivettes not in Gourmalon/Sainte-Marie-sur-Mer/La Bernerie-en-Retz/Préfailles/La Joselière/La Birochère). David has now rejected it explicitly on the same wrong-zone grounds, closing out that grandfathering question.)</span></li>
+<li><strong></strong> — Plain-pied 1975 101m² terrain divisible 1140m² zone Ub — Sainte-Marie <span class="reason">(thumbs_down — Reasons: Trop de rénovation. Note: DPE = E. Matches the DPE E weak-energy-performance flag already raised in the agent_note — David rejected on the same grounds.)</span></li>
+<li><strong></strong> — Plain-pied 1999 95m² DPE B — jardin 826m² gare à pied — La Bernerie-en-Retz <span class="reason">(thumbs_down — Reasons: Trop de rénovation, Agencement/taille inadapté. Note: Vetuste. Despite the standout DPE B/GES A energy performance, David flagged the property itself as dated/worn (&#x27;vetuste&#x27;) and the layout (only 2 chambres on 95m²) as not working — a useful signal that DPE alone isn&#x27;t a sufficient quality proxy for this board going forward.)</span></li>
+<li><strong></strong> — Maison neuve 2026 vue mer + studio indépendant locatif — Préfailles <span class="reason">(thumbs_down — Reasons: Environment not calm / too noisy. Note: Environment pas calme. UPDATED 2026-08-26: originally tagged &#x27;other&#x27; pending a decision — David has since confirmed calm environment is now a hard scope requirement, so this is retagged &#x27;not_calm&#x27; under the newly added taxonomy entry. See filters.calm_environment_required / calm_environment_note.)</span></li>
+<li><strong></strong> — Maison 1984 123m² à rafraîchir, sans vis-à-vis — Préfailles <span class="reason">(thumbs_down — Reasons: Trop de rénovation, Agencement/taille inadapté. Note: (none). Confirms the agent&#x27;s own &#x27;rafraîchissement à prévoir&#x27; flag and the compact-room-size concern already raised in the agent_note (6 pièces on 123m²).)</span></li>
+<li class="scan-row"><strong>2026-08-26</strong> — Second pass same day — 4 new qualifying listings added (La Bernerie-en-Retz + 3x Préfailles); found a gap in the morning run&#x27;s methodology</li>
+<li><strong></strong> — Maison familiale 2007 140m² piscine — 11 Remartin, Pornic (zonage corrigé, budget/surface conformes) <span class="reason">(filters_changed — Archived 2026-08-26 at David&#x27;s explicit request after the filter amendment session that day: (1) Remartin is not one of the 6 named zones in the new geographic scope (Gourmalon, Sainte-Marie-sur-Mer, La Bernerie-en-Retz, Prefailles, La Joseliere, La Birochere) -- it previously qualified only via the now-retired 10-min-harbour-by-car-and-bike rule. (2) At EUR449,000 it is also now above the new EUR420,000 budget ceiling (lowered from EUR450,000 same day). David was asked listing-by-listing whether to grandfather this one in or archive it, and chose to archive. Full due-diligence history (zoning correction, Georisques findings, urbanisme questions, price history) is preserved in this archive entry&#x27;s predecessor active-array record from prior runs -- see git history / earlier state-file versions if needed; not carried forward in full here to keep the archive concise.)</span></li>
+<li class="scan-row"><strong>2026-08-26</strong> — Daily scan — no new qualifying listings added; active board unchanged/verified (except Remartin, unverifiable — no URL on file); 3 borderline Saint-Michel-Chef-Chef candidates and 2 Agence des Flots + 2 Green Acres near-misses flagged but not added pending zone/detail verification</li>
+<li class="scan-row"><strong>2026-08-25</strong> — Daily scan — 2 new qualifying listings added (Quartier des Olivettes + Sainte-Marie); active board unchanged/verified; Olivettes zone-confirmation question finally resolved</li>
+<li><strong></strong> — Plain-pied 2004 hameau calme 113m² — Sainte-Marie (1150m² terrain) <span class="reason">(thumbs_down — Reasons: Overpriced for the condition, Other. Note: garden is very bad state, no &quot;whoaw&quot; effect. This resolves the zone-caution question moot — David rejected on condition/emotional-fit grounds rather than the possible re-listing concern, so whether this is the same house as archived SL-273710483 no longer needs chasing down.)</span></li>
+<li><strong></strong> — Maison 101m² sur terrain clos 780m² — Pornic centre (centre et plages à pieds) <span class="reason">(thumbs_down — Reasons: No / insufficient garden, Too much renovation needed, Overpriced for the condition. Note: (none). Rejected via the live widget same day it was added — David overrode the 780m² garden figure as insufficient in practice (agent-stated terrain size doesn&#x27;t seem to have matched his read of it) and flagged both condition/reno scope and pricing despite the DPE E build being informational-only in our filters.)</span></li>
+<li class="scan-row"><strong>2026-08-24</strong> — Ad-hoc platform coverage review — added immonot.com and green-acres.fr; confirmed Bien&#x27;ici/PAP/LeBonCoin blocked; found 1 new candidate on Un Nouveau Chez Vous</li>
+<li class="scan-row"><strong>2026-08-24</strong> — Daily scan — no new qualifying listings; Chrome available; active board unchanged; possible MAISON PRIVAT re-listing flagged but not confirmed</li>
+<li><strong></strong> — Plain-pied 1976 102m² à réhabiliter — Sainte-Marie (+10% test candidate) <span class="reason">(thumbs_down — Reasons: Too much renovation needed. David: &#x27;this house needs too much work to be liveable.&#x27; Surfaced during the 08/23 +10% threshold comparison scan (€418K, €18K over the standing €400K ceiling) — DPE E, 1976 build, &#x27;second oeuvre à réhabiliter&#x27; (interior walls, floors, kitchen, salle d&#x27;eau all need redoing). Zone Ub constructible et divisible confirmed by the agent (a genuine plus vs. the Remartin zone-agricole finding), 1130m² terrain per the listing header (688m² per the body text — never resolved, moot now). David&#x27;s rejection here is a useful data point for the open +10% question: extra budget bought more land, not more finished living space — worth weighting &#x27;move-in readiness&#x27; alongside surface/garden next time the threshold test is revisited. See pornic_threshold_test_open memory.)</span></li>
+<li class="scan-row"><strong>2026-08-23</strong> — Daily scan — 1 new qualifying listing added (Sainte-Marie, flagged for zone caution); former active listing sold/withdrawn</li>
+<li><strong></strong> — Terrain + maison neuve plain-pied 85m² — Pornic centre <span class="reason">(no_longer_available — Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted) — was active 08/18-08/22 at an unchanged €370,419/85m²/602m² terrain, Pornic centre &#x27;terrain + maison neuve&#x27; package with MAISON PRIVAT. Unclear if the build contract completed (sold) or was withdrawn. Was the board&#x27;s only active listing and top pick; board now empty pending today&#x27;s new search — see SCAN-NOTE-2026-08-23.)</span></li>
+<li class="scan-row"><strong>2026-08-22</strong> — Daily scan — no new qualifying listings; Chrome available; active board unchanged (6th consecutive zero-hit day)</li>
+<li class="scan-row"><strong>2026-08-21</strong> — Daily scan — no new qualifying listings; Chrome available; active board unchanged (5th consecutive zero-hit day)</li>
+<li class="scan-row"><strong>2026-08-20</strong> — Daily scan — no new qualifying listings; Chrome available; active board unchanged</li>
+<li class="scan-row"><strong>2026-08-19</strong> — Daily scan — no new qualifying listings; Chrome available (first time since outage streak); active board unchanged</li>
+<li class="scan-row"><strong>2026-08-18</strong> — Daily scan — no new qualifying listings; Chrome outage (4th occurrence); active board remains empty</li>
+<li><strong></strong> — Maison 90m² garage 40m², 700m² terrain piscinable — Pornic centre (500m Vieux Port) <span class="reason">(thumbs_down — Reasons: Too much renovation needed, Overpriced for the condition, Layout or size doesn&#x27;t work. Was the board&#x27;s last remaining active listing — board is now empty pending tomorrow&#x27;s widened sweep (7 zones removed, 10-min-harbour rule, 600m² garden min, 90m² surface min).)</span></li>
+<li><strong></strong> — Maison 1 chambre 70m² à rénover entièrement — Pornic centre-ville <span class="reason">(thumbs_down — No reason tags selected. Note: too small — David is now looking for at least 90m2. Surface_min raised from 70 to 90 in filters as a direct result of this explicit instruction.)</span></li>
+<li><strong></strong> — Maison de ville avec garage, 1948 — Pornic centre (DPE C/GES A) <span class="reason">(thumbs_down — Reasons: No / insufficient garden, Layout or size doesn&#x27;t work. Was the board&#x27;s top pick (best DPE C/GES A, garage, centre location) — lost on garden size (&#x27;jardinet&#x27; flagged as a soft concern when added) and layout despite the condition/price advantage.)</span></li>
+<li><strong></strong> — Maison 3ch 88m² à rafraîchir — Pornic Vieux Port (jardin clos, double garage) <span class="reason">(thumbs_down — Reasons: Other. Note: no longer available.)</span></li>
+<li><strong></strong> — Plain-pied 100m² à rénover — Sainte-Marie (688m² terrain, 4 min vélo du centre) <span class="reason">(thumbs_down — Reasons: Too much renovation needed, Layout or size doesn&#x27;t work. Was the board&#x27;s top pick on value grounds (lowest price/€/m² tracked) — lost on renovation scope and layout despite the price advantage.)</span></li>
+<li><strong></strong> — Maison 88.9m² à rénover — 600m du Vieux Port de Pornic <span class="reason">(thumbs_down — Reasons: Layout or size doesn&#x27;t work.)</span></li>
+<li><strong></strong> — Plain-pied 113m² jardin clos — Pornic (10 min du bourg) <span class="reason">(no_longer_available — Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted) — was active only 2 days (08/08-08/10) at unchanged €345,000. Unclear if sold or withdrawn; the out-of-area listing agency (Normandy-based) and the unverified sea-proximity/walkability risk flagged on 08/08 are now moot.)</span></li>
+<li><strong></strong> — Plain-pied neuf 2015 78m² — Pornic La Blavetière (notaire, DPE A) <span class="reason">(thumbs_down — Reasons: Other. Note: No longer available)</span></li>
+<li><strong></strong> — Plain-pied 1988 — Sainte-Marie (2,096m² terrain, assainissement non conforme) <span class="reason">(thumbs_down — Reasons: Too far from the sea, Too much renovation needed, Wrong zone / neighbourhood, Layout or size doesn&#x27;t work)</span></li>
+<li><strong></strong> — Plain-pied 2004 hameau calme — Sainte-Marie (canal Haute Perche) <span class="reason">(thumbs_down — Reasons: Too far from the sea, Wrong zone / neighbourhood, Layout or size doesn&#x27;t work)</span></li>
+<li><strong></strong> — Maison 1979 — 800m du Vieux Port (Sainte-Marie/Pornic centre) <span class="reason">(thumbs_down — Reasons: Too far from the sea, No / insufficient garden, Too much renovation needed, Wrong zone / neighbourhood)</span></li>
+<li><strong></strong> — Maison 1979 — La Birochère (rénovation à prévoir) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. La Birochère/La Joselière removed from scope.)</span></li>
+<li><strong></strong> — Maison à rénover 90m² — Préfailles (budget entry point) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Préfailles removed from scope.)</span></li>
+<li><strong></strong> — Maison d&#x27;architecte atypique 102m² — Les Moutiers-en-Retz (atelier + salorge, 4 420m² terrain) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Les Moutiers-en-Retz removed from scope.)</span></li>
+<li><strong></strong> — Plain-pied 95m² — La Bernerie-en-Retz (400m de l&#x27;océan) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Was the board&#x27;s TOP PICK (best sea proximity remaining, 400m, price-dropped 03/08). La Bernerie-en-Retz removed from scope — archived on zone grounds only, not on merits. Worth remembering if the zone scope ever widens again.)</span></li>
+<li><strong></strong> — Maison neuve 2021 101m² — Saint-Michel-Chef-Chef (DPE A, sans travaux) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Saint-Michel-Chef-Chef removed from scope.)</span></li>
+<li><strong></strong> — Maison bel aperçu mer 105m² — Saint-Michel-Chef-Chef <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Saint-Michel-Chef-Chef removed from scope.)</span></li>
+<li><strong></strong> — Plain-pied 1979 — La Birochère (RÉACTIVÉ) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. La Birochère/La Joselière removed from scope.)</span></li>
+<li><strong></strong> — Villa de charme 1920s 105m² — Tharon-Plage (duplex 2x T2, 50m mer) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Saint-Michel-Chef-Chef (Tharon-Plage) removed from scope.)</span></li>
+<li><strong></strong> — Maison 2012 — La Joselière/Birochère (300m plage, vue mer partielle) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. La Birochère/La Joselière removed from scope.)</span></li>
+<li><strong></strong> — Plain-pied 1950 à rénover — La Joselière/Birochère (508m² terrain) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. La Birochère/La Joselière removed from scope.)</span></li>
+<li><strong></strong> — Maison neuve 2025 vue mer — Préfailles (studio indépendant, vente aux enchères) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Time-sensitive auction listing, bidding was open through 09/08. Préfailles removed from scope.)</span></li>
+<li><strong></strong> — Maison rénovée 1923 85m² — La Bernerie-en-Retz (aucun travaux) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. La Bernerie-en-Retz removed from scope.)</span></li>
+<li><strong></strong> — Plain-pied récent 2020 88m² — Les Moutiers-en-Retz (impasse calme, &lt;600m plage) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Les Moutiers-en-Retz removed from scope.)</span></li>
+<li><strong></strong> — Maison 1967 85m² — Tharon-Plage (300m océan, terrain arboré 869m²) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Saint-Michel-Chef-Chef (Tharon-Plage) removed from scope.)</span></li>
+<li><strong></strong> — Plain-pied 1965 77m² — Saint-Michel-Chef-Chef (à remettre à niveau, extension possible) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Saint-Michel-Chef-Chef removed from scope.)</span></li>
+<li><strong></strong> — Maison à rénover 100m² — Les Moutiers-en-Retz (1 200m² jardin clos, puits) <span class="reason">(zone_removed — Search scope narrowed 2026-08-07 at David&#x27;s request to Pornic centre/vieux bourg, Gourmalon, and Sainte-Marie-sur-Mer only. Was the cheapest listing on the entire board. Les Moutiers-en-Retz removed from scope.)</span></li>
+<li><strong></strong> — Maison néo-bretonne 106m² — Saint-Michel-Chef-Chef (50m de l&#x27;océan, Tharon) <span class="reason">(no_longer_available — LOST THE BOARD&#x27;S TOP PICK. Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted) — was active 23/07-04/08 at an unchanged €361,000/106m², 50m from Tharon beach, the best sea proximity ever tracked on this board. Unclear if sold or simply withdrawn. MARKET SIGNAL: reinforces the pattern that genuinely beach-adjacent, budget-friendly stock (&lt;€400K, real walk-to-water distance) moves fast in this market — echoes EA-2240, EA3050, and the SL-269780049 Moutiers turnkey property going under offer within ~2 weeks of listing. SL-270776625 (La Bernerie, 400m mer) promoted to top pick in its place.)</span></li>
+<li><strong></strong> — Maison de caractère 1750/1900 plain-pied 109m² — Les Moutiers-en-Retz (impasse, rénovation) <span class="reason">(no_longer_available — Direct re-fetch on seloger.com today returns &#x27;Annonce supprimée&#x27; (ad deleted) — was active 13/07-04/08 at an unchanged €332,850, cheapest listing in Les Moutiers-en-Retz with genuine seasonal-rental optionality (two-part configuration). Unclear if sold or withdrawn.)</span></li>
+<li><strong></strong> — Plain-pied à rafraîchir 109m² — Sainte-Marie (proche port) <span class="reason">(no_longer_available — Re-checked 29/07 on seloger.com — page now shows &#x27;Annonce supprimée&#x27; (ad deleted). Was active 23/07-28/07, unchanged at €376,000 throughout.)</span></li>
+<li><strong></strong> — Maison bord de mer 105m² — Préfailles (particulier, 10 min plage à pied) <span class="reason">(no_longer_available — Direct listing URL now redirects to a different, unrelated Préfailles listing (251504709) on seloger.com — the private-sale ad (&#x27;Christine&#x27;) is gone. Checked 23/07.)</span></li>
+<li><strong></strong> — Maison 1980 entièrement rénovée 2021 — Les Moutiers-en-Retz <span class="reason">(no_longer_available — Board&#x27;s former TOP PICK — the only fully-renovated move-in-ready property found. Listing now opens with &#x27;* SOUS OFFRE *&#x27; (under offer), checked 23/07, still at €378,650. Confirms this was the strongest listing on the board — an offer was accepted within ~11 days of first_seen (12/07). MARKET SIGNAL: turnkey, no-reno-needed stock in Les Moutiers-en-Retz moves fast once priced right.)</span></li>
+<li><strong></strong> — Plain-pied 2005 parfaitement entretenu — Saint-Michel-Chef-Chef (720m² clos) <span class="reason">(no_longer_available — Direct listing now returns &#x27;Annonce supprimée&#x27; (ad deleted) on seloger.com — checked 23/07. Had the best DPE/GES combo on the board (C/A); worth watching for a relist.)</span></li>
+<li><strong></strong> — Maison années 70 à rafraîchir 108m² — La Bernerie-en-Retz <span class="reason">(no_longer_available — Listing now returns &#x27;Annonce supprimée&#x27; (ad deleted) on seloger.com — removed just one day after being added to the board (12/07). MARKET SIGNAL: consistent with the fast-moving pattern seen elsewhere on the board (EA-2240, EA3050) — well-priced La Bernerie stock is also moving quickly. Unclear if sold or simply withdrawn/relisted elsewhere; worth a quick check with GWENAËLLE PAGEOT BSK IMMOBILIER if a similar La Bernerie listing resurfaces under a new ref.)</span></li>
+<li><strong></strong> — Maison Nantaise 1966 — La Joselière <span class="reason">(over_new_budget_ceiling — Board&#x27;s former top pick — was one day from the old 45-day stale threshold when the buyer profile was revised. Budget ceiling dropped from €500K/€475K-practical to a flat €400K today (2026-07-10); €449,000 no longer qualifies. Still active on the market as of today&#x27;s check if David wants to revisit at a different budget.)</span></li>
+<li><strong></strong> — Rare — Boulevard de l&#x27;Océan, Sainte-Marie <span class="reason">(over_new_budget_ceiling — €458,840 exceeds the new €400K flat ceiling (was already borderline vs. the old €475K practical ceiling). Also now below the new 90m² surface minimum at 75m². Double disqualification under the revised buyer profile (2026-07-10).)</span></li>
+<li><strong></strong> — Plain-pied rénové 1975 — Sainte-Marie (hameau) <span class="reason">(over_new_budget_ceiling — €473,800 was right at the old €475K practical ceiling — now €73,800 over the new flat €400K ceiling. Turnkey, best DPE on the board (C/A) — worth flagging to David if he ever revisits a higher budget tier.)</span></li>
+<li><strong></strong> — Balnéaire années 30 — Gourmalon (maison + appartement indépendant) <span class="reason">(over_new_budget_ceiling — €499,000 was already at the old hard budget max — now €99,000 over the new flat €400K ceiling. The rare dual-income (main house + independent apartment) structure made this the board&#x27;s strongest rental-yield candidate; worth remembering if David&#x27;s budget moves back up.)</span></li>
+<li><strong></strong> — Maison de ville en triplex — atelier d&#x27;artiste, vue Château <span class="reason">(no_longer_available — Direct listing URL now returns 404 on espaces-atypiques.com, and the property no longer appears among the agency&#x27;s 20 current &#x27;biens atypiques&#x27; on the full Pornic listing page (checked 09/07) — both signals point to a sale or withdrawal just one day after first appearing on the board (added 08/07). MARKET SIGNAL: rare mixed-use/character stock in the walkable centre profile is moving within 24-48 hours of listing — echoes the EA3050 pattern (port-view character house went under offer fast once priced right). Confirms this is a hot micro-segment; move fast on centre/port-adjacent character finds going forward.)</span></li>
+<li><strong></strong> — Esprit maison — vue sur le port <span class="reason">(no_longer_available — Now marked &#x27;Sous offre&#x27; (under offer) on Espaces Atypiques — reconfirmed still under offer on 04/07 site listing. Price had dropped from €495,000 to €449,000 shortly before going under offer — confirms this old-town port-view character property was underpriced once repriced. Lost to another buyer. MARKET SIGNAL: character stock near the port moves fast once priced right — don&#x27;t sit on repriced listings in this profile.)</span></li>
+<li><strong></strong> — Maison de caractère en pierre — jardin bucolique Gourmalon <span class="reason">(no_longer_available — Confirmed sold (Vendu). Stone house, 77m², 850m² bucolic plot, Gourmalon. Would have been a strong candidate — confirms demand at this profile.)</span></li>
+<li><strong></strong> — Maison Pornic — jardin S/O <span class="reason">(thumbs_down — No character — 1998 build. David explicitly rejected: &#x27;no soul&#x27;. Hard filter added: pre-1980 construction required. Now showing &#x27;Sous offre&#x27; on agency site (04/07) — confirms it moved.)</span></li>
+<li><strong></strong> — Maison Pornic 4 pièces — 96 m² <span class="reason">(post_1980_build — Construction year confirmed 2018. Hard filter violation (post-1980). Now showing &#x27;Compromis signé&#x27; on agency site (04/07).)</span></li>
+<li><strong></strong> — Maison récente 2017 — Sainte-Marie La Geltière <span class="reason">(post_1980_build — 2017 build. Hard filter violation (post-1980).)</span></li>
+<li><strong></strong> — Maison 2013 rénovée — Birochère-Joselière <span class="reason">(post_1980_build — 2013 build. Hard filter violation (post-1980).)</span></li>
+<li><strong></strong> — Maison 2013 Birochère — Gicquel/L&#x27;Immobilière du Littoral <span class="reason">(post_1980_build — 2013 build confirmed via Capifrance listing. Hard filter violation (post-1980). 103m², 336m² terrain, 4ch, south garden. Would otherwise have qualified.)</span></li>
+<li><strong></strong> — Maison 2013 Birochère — Nathalie LABBÉ / Proprietes-privees <span class="reason">(post_1980_build — 2013 build confirmed. Hard filter violation (post-1980). 107m², 367m² terrain, 4ch.)</span></li>
+<li class="scan-row"><strong>2026-08-27</strong> — Daily scan — 3 new qualifying listings added (all La Bernerie-en-Retz); active board unchanged/verified; zone_removed backlog flagged again unactioned</li>
+<li><strong>2026-08-27</strong> — Maison 1976 122m² + studio indépendant + atelier — 50m plage Sennetière, La Bernerie-en-Retz <span class="reason">(thumbs_down — Reasons: Too much renovation needed. Note: (none). Rejected as a batch of 3 (all La Bernerie-en-Retz finds from the 08/27 scan).)</span></li>
+<li><strong>2026-08-27</strong> — Maison 1970s? 133m² actuellement 2 logements — secteur La Rogère, La Bernerie-en-Retz (800m plage Boutinardière) <span class="reason">(thumbs_down — Reasons: Too much renovation needed. Note: (none). Rejected as a batch of 3 (all La Bernerie-en-Retz finds from the 08/27 scan).)</span></li>
+<li><strong>2026-08-27</strong> — Maison de bourg 1966 73m² rénovée — hypercentre La Bernerie-en-Retz (100m Grande Plage) <span class="reason">(thumbs_down — Reasons: Too much renovation needed. Note: (none). Rejected as a batch of 3 (all La Bernerie-en-Retz finds from the 08/27 scan).)</span></li>
+<li class="scan-row"><strong>2026-08-28</strong> — Daily scan — no new qualifying listings; active board unchanged/verified; zone_removed backlog resurfaced for the 3rd consecutive day, unactioned</li>
+<li class="scan-row"><strong>2026-08-30</strong> — Daily scan — 5 new qualifying listings added (Préfailles apartment top pick, 3x Sainte-Marie-sur-Mer maisons, 1x Birochère-Joselière apartment); 3 tracked thumbs_up listings re-verified unchanged; active board was empty at run start</li>
+<li class="scan-row"><strong>2026-09-03</strong> — Daily scan — all 14 tracked listings re-verified live, unchanged; 3 new qualifying listings added (La Bernerie-en-Retz, Préfailles, Birochère-Joselière); several near-misses screened out as duplicates of already-archived/rejected listings</li>
+<li><strong>2026-08-30</strong> — Maison plain-pied 2012 90m² DPE C &#x27;tout à pied&#x27; — Sainte-Marie-sur-Mer <span class="reason">(no_longer_matches_filters — Terrain clos 226m² &lt; seuil garden_min_sqm=300 (reconfirmé 09-04). Toujours en vente sinon inchangée (407 550€).)</span></li>
+<li><strong>2026-08-30</strong> — Maison 1982 101m² terrain clos 780m² &#x27;centre et plages à pied&#x27; — Sainte-Marie-sur-Mer <span class="reason">(no_longer_matches_filters — DPE E &gt; dpe_max_house=C (reconfirmé 09-04). Toujours en vente sinon inchangée (399 950€, jardin 780m² qui aurait passé le filtre garden).)</span></li>
+<li><strong>2026-08-30</strong> — Maison plain-pied 1983 88m² &#x27;située au calme&#x27; — Sainte-Marie-sur-Mer <span class="reason">(no_longer_matches_filters — Terrain clos 266m² &lt; garden_min_sqm=300 ET DPE E &gt; dpe_max_house=C. Toujours en vente sinon inchangée (371 000€).)</span></li>
+<li><strong>2026-08-31</strong> — Maison de ville 1948 91m² jardin+garage — Sainte-Marie <span class="reason">(no_longer_matches_filters — Terrain 150m² &lt; garden_min_sqm=300. Toujours en vente sinon inchangée (349 500€, DPE C).)</span></li>
+<li><strong>2026-09-01</strong> — Maison neuve 2025 99m² DPE A PMR terrain 200m² — La Bernerie-en-Retz (première occupation) <span class="reason">(no_longer_matches_filters — Terrain 200m² &lt; garden_min_sqm=300. Toujours en vente sinon inchangée (366 350€, DPE A neuf).)</span></li>
+<li><strong>2026-09-02</strong> — Maison plain-pied 1923 85m² entièrement rénovée, sans vis-à-vis — La Bernerie-en-Retz <span class="reason">(no_longer_matches_filters — Terrain 199m² &lt; garden_min_sqm=300 ET DPE D &gt; dpe_max_house=C. Toujours en vente sinon inchangée (299 500€).)</span></li>
+<li><strong>2026-09-02</strong> — Maison 1973 135.74m² à rénover, duplex réunissable, jardin 501m² — La Bernerie-en-Retz <span class="reason">(no_longer_matches_filters — DPE D &gt; dpe_max_house=C. Toujours en vente sinon inchangée (376 500€, jardin 501m² qui aurait passé le filtre garden).)</span></li>
+<li><strong>2026-09-02</strong> — Maison plain-pied 84.4m² rénovée — La Bernerie-en-Retz (sœur possible de la maison Goncalves) <span class="reason">(no_longer_matches_filters — Terrain 199m² &lt; garden_min_sqm=300 ET DPE D &gt; dpe_max_house=C. Toujours en vente sinon inchangée (299 500€).)</span></li>
+<li><strong>2026-09-02</strong> — Maison 1979 96m² à rénover, jardin 604m² — Birochère-Joselière (dual-mandate, 2 agences) <span class="reason">(no_longer_matches_filters — DPE D &gt; dpe_max_house=C. Toujours en vente sinon inchangée (390 000€, jardin 604m² qui aurait passé le filtre garden).)</span></li>
+<li><strong>2026-09-03</strong> — Maison à étage 126.5m² DPE F quartier calme peu de passage — La Bernerie-en-Retz <span class="reason">(no_longer_matches_filters — DPE F &gt; dpe_max_house=C (flagué pour re-screening dans la note de filtre du 09-04). Toujours en vente sinon inchangée (376 300€).)</span></li>
+<li><strong>2026-09-03</strong> — Maison 1984 123m² quartier calme sans vis-à-vis, rafraîchissement à prévoir — Préfailles <span class="reason">(no_longer_available — Préfailles maison 1984 123m² — annonce supprimée (vendue ou retirée) sur SeLoger, vérifié 2026-09-05.)</span></li>
+<li><strong>2026-09-03</strong> — Maison plain-pied 1950 84m² à rénover, proche plage Joselière — Birochère-Joselière <span class="reason">(no_longer_available — Plain-pied 1950 84m² Birochère-Joselière — annonce supprimée (vendue ou retirée) sur SeLoger, vérifié 2026-09-05.)</span></li>
+<li><strong>2026-09-04</strong> — Maison plain-pied 1960 71m² jardin clos sud 311m² — Sainte-Marie-sur-Mer <span class="reason">(duplicate_of_thumbs_up — Doublon exact de la fiche thumbs_up SL-265235911 (même ref agence &#x27;656&#x27;, Distinction Immobilier, 71m², 334 500€, La confirmation: l&#x27;URL thumbs_up 265235911.htm redirige désormais vers l&#x27;identifiant 26A5QNFHNCWC). Retiré des actifs pour éviter le doublon — le bien reste suivi via thumbs_up.)</span></li>
+<li><strong>2026-09-04</strong> — Maison 89m² jardin 520m² — La Bernerie-en-Retz <span class="reason">(no_longer_available — Maison 89m² jardin 520m² La Bernerie-en-Retz — &#x27;n&#x27;est plus disponible&#x27; sur SeLoger, vérifié 2026-09-05.)</span></li>
+<li><strong>2026-09-04</strong> — Terrain + maison neuve 70m² 1 chambre DPE A terrain 479m² — La Bernerie-en-Retz <span class="reason">(no_longer_matches_filters — Surface 70m² &lt; surface_min=80 ET chambres=1 &lt; bedrooms_min=2 ET pièces=2 &lt; rooms_min=3. Toujours en vente sinon inchangée (229 461€).)</span></li>
+<li><strong>2026-09-04</strong> — Terrain + maison neuve 90m² terrain 684m² — La Bernerie-en-Retz <span class="reason">(no_longer_available — Terrain+maison neuve 90m²/684m² La Bernerie-en-Retz — lien SeLoger Construire mort (redirige vers accueil), vérifié 2026-09-05. Note: un bien aux caractéristiques quasi-identiques (90m²/684m², même prix 407 628€) réapparaît sous un nouvel identifiant SeLoger Construire (278104945) mais avec 1 seule chambre — ne remplit plus le filtre bedrooms_min=2, donc non ré-ajouté.)</span></li>
+<li><strong>2026-09-04</strong> — Terrain + maison neuve 80m² terrain 583m² — La Bernerie-en-Retz <span class="reason">(no_longer_available — Terrain+maison neuve 80m²/583m² La Bernerie-en-Retz — lien SeLoger Construire mort (redirige vers accueil), vérifié 2026-09-05.)</span></li>
+<li><strong>2026-09-04</strong> — Terrain + maison neuve 90m² terrain 400m² — La Bernerie-en-Retz <span class="reason">(no_longer_available — Terrain+maison neuve 90m²/400m² La Bernerie-en-Retz — lien SeLoger Construire mort (redirige vers accueil), vérifié 2026-09-05.)</span></li>
+<li><strong>2026-09-06</strong> — Appartement neuf T4 81m² 3 chambres, 202m² extérieur — Sainte-Marie <span class="reason">(no_longer_available)</span></li>
+  </ul>
+</details>
+
+<script>
+function esc(s) { return s; }
+
+function copyAndAlert(text) {
+  navigator.clipboard.writeText(text).then(function() {
+    alert("Copié. Collez ceci dans votre chat Pornic dans Claude (ouvrez le projet Pornic si vous n'en avez pas un ouvert) pour que ce soit enregistré — cette page ne peut pas le sauvegarder elle-même.\n\n" + text);
+  }, function() {
+    prompt("Copie automatique impossible. Copiez ce texte manuellement et collez-le dans votre chat Pornic :", text);
+  });
+}
+
+document.querySelectorAll('.btn-up').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var name = btn.getAttribute('data-name');
+    var msg = "👍 " + name + " — I like this one. Please dig deeper and prepare a full visit brief.";
+    copyAndAlert(msg);
+  });
+});
+
+document.querySelectorAll('.btn-down').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var idx = btn.getAttribute('data-idx');
+    var panel = document.getElementById('reason-panel-' + idx);
+    panel.style.display = (panel.style.display === 'none' || !panel.style.display) ? 'block' : 'none';
+  });
+});
+
+document.querySelectorAll('.btn-confirm-reject').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    var idx = btn.getAttribute('data-idx');
+    var name = btn.getAttribute('data-name');
+    var checked = document.querySelectorAll('.reason-cb[data-idx="' + idx + '"]:checked');
+    var labels = [];
+    checked.forEach(function(cb) { labels.push(cb.value); });
+    var otherText = document.getElementById('reason-other-' + idx).value.trim();
+    var msg = "👎 " + name + " — rejected. Reasons: " + labels.join(', ') + (otherText ? (". Note: " + otherText) : ".");
+    copyAndAlert(msg);
+    var card = document.getElementById('active-card-' + idx);
+    if (card) {
+      card.style.opacity = '0';
+      setTimeout(function() {
+        card.remove();
+        var remaining = document.querySelectorAll('#active-grid .prop-card').length;
+        document.getElementById('active-count').textContent = remaining;
+      }, 250);
+    }
+  });
+});
+</script>
+</body>
+</html>
